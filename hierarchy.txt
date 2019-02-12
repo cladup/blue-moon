@@ -1,0 +1,40 @@
+Campaigns Page
+
+CladUp
+ |
+ +--Header
+ |  |
+ |  +--logo, current page indicator, utilities (notification, search), account, ...
+ |
+ +--Navigation
+ |  |
+ |  +--Links: Campaigns, Products
+ |
+ +--Body
+ |  |
+ |  +--CampaignList
+ |  |   |
+ |  |   +--Campaigns
+ |  |       |
+ |  |       +--Info: id, name, isDeployed, ...
+ |  |
+ |  +--SelectedCampaign
+ |  |   |
+ |  |   +--Title: edit, close, save, ...
+ |  |   |
+ |  |   +--Scene: lightOn, edit, fullScreen
+ |  |   |   |
+ |  |   |   +--Models: Products, Environment
+ |  |   |
+ |  |   +--Inspector (Products loaded)
+ |  |       |
+ |  |       +--utilities (load Product)
+ |  |       |
+ |  |       +--Products
+ |  |           |
+ |  |           +--Info: id, name, Transform (position, rotation, scale), 2dImage, ...
+ |  |           +--utilities (unload Product)
+ |  |
+ |  +--StorageInfo
+ |
+ +--Footer
