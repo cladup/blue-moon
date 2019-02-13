@@ -1,5 +1,0 @@
-Next.js
-    npm install --save next react react-dom
-+ CSS
-    npm install --save @zeit/next-css
-        (import "../style.css")
