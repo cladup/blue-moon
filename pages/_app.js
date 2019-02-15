@@ -23,6 +23,9 @@ class MyApp extends App {
     <Container>
       <Head>
         <title>Clad Up</title>
+        {
+          <script src="https://aframe.io/releases/0.9.0/aframe.min.js" />
+        }
       </Head>
       <Component {...pageProps} />
     </Container>

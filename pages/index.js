@@ -28,7 +28,7 @@ class Index extends Component {
                     <NavBar />
                     {(this.props.router.query.page == 'Campaigns') ? <Campaigns /> :''}
                     {(this.props.router.query.page == 'Products') ? <Products /> : ''}
-                    {(this.props.router.query.page == undefined) ? <Campaigns /> : ''}
+                    {(this.props.router.query.page == undefined) ? '랜딩페이지!' : ''}
                 </div>
             </div>
         )

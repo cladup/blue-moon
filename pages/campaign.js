@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Product from './product'
+import SceneView from './sceneview';
 
 class Campaign extends Component {
     constructor(props) {
@@ -14,7 +15,10 @@ class Campaign extends Component {
             <div>
                 <h5 className="box-white row">{this.props.name}</h5>
                 <div className="row">
-                    <div className="col-8 box-white virtual-env-scene-viewport"> Virtual Environment</div>
+                    <div className="col-8 box-white virtual-env-scene-viewport">
+                        Virtual Environment <br />
+                        <SceneView />
+                    </div>
                     <div className="col-4 box-white">
                         <h6>Products</h6>
                         <Product name="product 1" />
