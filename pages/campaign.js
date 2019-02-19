@@ -15,10 +15,10 @@ class Campaign extends Component {
             <div>
                 <h5 className="box-white row">{this.props.name}</h5>
                 <div className="row">
-                    <div className="col-8 box-white virtual-env-scene-viewport">
+                    <div className="col-9 box-white virtual-env-scene-viewport">
                         <SceneView />
                     </div>
-                    <div className="col-4 box-white">
+                    <div className="col box-white">
                         <h6>Products</h6>
                         <Product name="product 1" />
                         <Product name="product 2" />
@@ -26,14 +26,14 @@ class Campaign extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-8 box-white">
+                    <div className="col-9 box-white">
                         <h6>Furnitures</h6>
                         <Product name="Furniture 1" />
                         <Product name="Furniture 2" />
                         <Product name="Furniture 3" />
                         <Product name="Furniture 4" />
                     </div>
-                    <div className="col-4 text-center">(storage_info)</div>
+                    <div className="col text-center">(storage_info)</div>
                 </div>
             </div>
         )

@@ -20,19 +20,36 @@ class SceneView extends React.Component {
     componentDidMount() {
         if (typeof window !== 'undefined') {
             var aframe = require('aframe')
-            registerClickDrag(aframe);
             this.setState({ appRendered: true })
         }
+        try {
+            registerClickDrag(aframe);
+        } catch {}
+        require('./drag-rotate-component')
     }
 
-    moveToTheRight()
-    {
+    moveToTheRight = () => {
         this.setState({
             spherePosX: this.state.spherePosX + 0.1
         });
         console.log("moveToTheRight");
     }
 
+    setNewPos(pos)
+    {
+        this.setState({
+            boxPosX: this.state.boxPosX+pos.x,
+            boxPosY: this.state.boxPosY+pos.y,
+            boxPosZ: this.state.boxPosZ+pos.z
+        });
+        console.log(pos);
+    }
+
+    handleClick = () => {
+        console.log('Clicked!');
+    }
+
+    
     render() {
         return (
         <div style={{ height: '100%', width: '100%' }}>
@@ -56,19 +73,28 @@ class SceneView extends React.Component {
                     events={{click: this.moveToTheRight.bind(this)}}
                 />
                 <Entity
-                    id="tempBox"
-                    click-drag
+                    id="youngjunbox"
                     primitive="a-box"
                     position={{x: this.state.boxPosX, y: this.state.boxPosY, z: this.state.boxPosZ}}
                     rotation="0 45 0"
                     color="#4CC3D9"
-                    events={{dragend: ()=>{
-                        console.log(this.state.position)
-                    }}}
+                    drag-rotate-component
+                    // events={{
+                    //     click: this.handleClick,
+                    // }}
+                    // click-drag
+                    // events={{dragstart: () => {
+                    //     console.log("disable scene scroll here");
+                    // }}}
+                    // events={{dragend: (args) => {
+                    //     this.setNewPos(args.detail.offset); 
+                    //     console.log(args.detail.offset);
+                    //     console.log("re-endable scene scroll here");
+                    // }}}
                 />
 
                 {/* <Entity geometry={{primitive: 'box'}} material={{color: 'red'}} position={{x: 0, y: 0, z: -5}}/> */}
-                <Entity primitive="a-camera" wasd-controls-enabled="false" >
+                <Entity primitive="a-camera" wasd-controls-enabled="false" look-controls="reverseMouseDrag: true;">
                     <Entity primitive="a-cursor" animation__click={{property: 'scale', startEvents: 'click', from: '0.1 0.1 0.1', to: '1 1 1', dur: 150}}/>
                 </Entity>
             </Scene>

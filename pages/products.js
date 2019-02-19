@@ -10,7 +10,7 @@ class Products extends Component {
 
     render() {
         return (
-            <div className="col bg-light-gray">
+            <div className="bg-light-gray">
                 띠용~! 프로덕트 페이지는 아직 안 만들었다능!
             </div>
         )

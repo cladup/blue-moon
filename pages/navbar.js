@@ -19,7 +19,7 @@ class NavBar extends Component {
 
     render() {
         return (
-            <div className="col-2 bg-dark text-light">
+            <div className="bg-dark text-light">
                 <span className="small text-muted">CLOUD</span><br />
                 <ul className="nav flex-column">
                     <NavLink page="Campaigns"/>

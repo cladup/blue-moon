@@ -11,8 +11,8 @@ class Campaigns extends Component {
 
     render() {
         return (
-            <div className="col row no-padding bg-light-gray">
-                <div className="col-2">
+            <div className="row no-padding bg-light-gray">
+                <div className="col-2 no-padding">
                     <div className="box-white">
                         <h5>All Campaigns</h5>
                         <div className="box-white">Campaign 1</div>
