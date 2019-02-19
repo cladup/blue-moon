@@ -1,19 +1,12 @@
 import React from 'react';
 import {Entity, Scene} from 'aframe-react';
-import registerClickDrag from 'aframe-click-drag-component';
 
 class SceneView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             appRendered: false,
-            color: 'red',
-            spherePosX: 1,
-            spherePosY: 1.5,
-            spherePosZ: -3,
-            boxPosX: -1,
-            boxPosY: 1,
-            boxPosZ: -3
+            selectedObjId: ''
         };
     }
 
@@ -22,33 +15,25 @@ class SceneView extends React.Component {
             var aframe = require('aframe')
             this.setState({ appRendered: true })
         }
-        try {
-            registerClickDrag(aframe);
-        } catch {}
         require('./drag-rotate-component')
     }
 
-    moveToTheRight = () => {
-        this.setState({
-            spherePosX: this.state.spherePosX + 0.1
-        });
-        console.log("moveToTheRight");
+    selectObject = (args) => {
+        let selectedObjId = args.target.id;
+        if(selectedObjId != this.state.selectedObjId) {
+            this.setState({
+                selectedObjId: selectedObjId
+            });
+            console.log(args.target.getAttribute('position'));
+        } else {
+            this.setState({
+                selectedObjId: ''
+            });
+        }
+        let infoText = document.getElementById('infoText');
+        console.log(infoText.getAttribute('text').value);
+        infoText.setAttribute('text', {value:'currently selected object: '+this.state.selectedObjId});
     }
-
-    setNewPos(pos)
-    {
-        this.setState({
-            boxPosX: this.state.boxPosX+pos.x,
-            boxPosY: this.state.boxPosY+pos.y,
-            boxPosZ: this.state.boxPosZ+pos.z
-        });
-        console.log(pos);
-    }
-
-    handleClick = () => {
-        console.log('Clicked!');
-    }
-
     
     render() {
         return (
@@ -64,38 +49,28 @@ class SceneView extends React.Component {
                 <Entity primitive="a-light" type="ambient" intensity="2" color="white"/>
                 <Entity primitive="a-light" type="point" intensity="4" color="white"/>
                 <Entity primitive="a-sky" height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"/>
-                <Entity text={{value: 'Aim and click sphere to move to the right\nClick and Drag box to move', align: 'center'}} position={{x: 0, y: 2, z: -1}}/>
+                <Entity id="infoText" text={{value: 'Select an object to move.'}} position={{x: 0, y: 2, z: -1}}/>
                 
                 <Entity
-                    geometry={{primitive: 'sphere'}}
+                    id="redSphere"
+                    geometry={{primitive: 'sphere', radius: 0.5}}
                     material={{color: 'red'}}
-                    position={{x: this.state.spherePosX, y: this.state.spherePosY, z: this.state.spherePosZ}}
-                    events={{click: this.moveToTheRight.bind(this)}}
+                    position={{x: 1, y: 1, z: -3}}
+                    class="clickable"
+                    events={{click: this.selectObject.bind(this)}}
                 />
                 <Entity
-                    id="youngjunbox"
-                    primitive="a-box"
-                    position={{x: this.state.boxPosX, y: this.state.boxPosY, z: this.state.boxPosZ}}
-                    rotation="0 45 0"
-                    color="#4CC3D9"
-                    drag-rotate-component
-                    // events={{
-                    //     click: this.handleClick,
-                    // }}
-                    // click-drag
-                    // events={{dragstart: () => {
-                    //     console.log("disable scene scroll here");
-                    // }}}
-                    // events={{dragend: (args) => {
-                    //     this.setNewPos(args.detail.offset); 
-                    //     console.log(args.detail.offset);
-                    //     console.log("re-endable scene scroll here");
-                    // }}}
+                    id="greenBox"
+                    geometry={{primitive: 'box'}}
+                    material={{color: 'green'}}
+                    position={{x: -1, y: 1, z: -3}}
+                    class="clickable"
+                    events={{click: this.selectObject.bind(this)}}
+                    // drag-rotate-component
                 />
 
-                {/* <Entity geometry={{primitive: 'box'}} material={{color: 'red'}} position={{x: 0, y: 0, z: -5}}/> */}
-                <Entity primitive="a-camera" wasd-controls-enabled="false" look-controls="reverseMouseDrag: true;">
-                    <Entity primitive="a-cursor" animation__click={{property: 'scale', startEvents: 'click', from: '0.1 0.1 0.1', to: '1 1 1', dur: 150}}/>
+                <Entity primitive="a-camera" wasd-controls-enabled="false" look-controls="reverseMouseDrag: true;" mouse-cursor>
+                    <Entity cursor="rayOrigin: mouse;" raycaster="objects: .clickable;" />
                 </Entity>
             </Scene>
             }
