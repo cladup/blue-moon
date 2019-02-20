@@ -48,3 +48,7 @@ html,body
   justify-content: center;
   height: 100%;
 }
+
+a {
+    color: #00B7FF;
+}
