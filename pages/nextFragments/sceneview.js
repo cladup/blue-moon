@@ -17,23 +17,6 @@ class SceneView extends React.Component {
             this.setState({ appRendered: true })
         }
 
-        var request = new XMLHttpRequest();
-
-        request.open('GET', 'http://stolenbyte.kr:8080/api/campaign/get/1/', true);
-
-        request.onload = function() {
-        var campaignData = JSON.parse(this.response);
-
-        if (request.status >= 200 && request.status < 400) {
-                campaignData.display_stands.forEach(display_stands => {
-                console.log(display_stands.name);
-                });
-            } else {
-                console.log('json error');
-            }
-        }
-
-        request.send();
     }
 
     selectObject = (args) => {
@@ -102,19 +85,11 @@ class SceneView extends React.Component {
 
                         {/*  3D Model */}
                         <Entity id="Env1-1" position="0.4 23.17 -0.5" scale="100 100 100" gltf-model="#modern-building-gltf" shadow="receive: true;" />
-                        <a-obj-model id="Env1-2" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-iron-wall-obj" material="src: #iron-wall; repeat: 3 3; transparent:true;" shadow="receive: true;"></a-obj-model>
-                        <a-obj-model id="Env1-3" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-water-circle-obj" material="src: #wood; repeat: 10 10;" shadow="receive: true;"></a-obj-model>
-                        <a-obj-model id="Env1-4" position="0.0 -0.30 -1.735" scale="1 1 1" src="#modern-building-window-obj" material="color: skyblue; repeat: 2 2;opacity: 0.4; transparent:true;" shadow="receive: true;"></a-obj-model>
-
+                        <a-obj-model id="Env1-2" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-iron-wall-obj" material="src: #iron-wall; repeat: 3 3; transparent:true;" shadow="receive: true;" />
+                        <a-obj-model id="Env1-3" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-water-circle-obj" material="src: #wood; repeat: 10 10;" shadow="receive: true;" />
+                        <a-obj-model id="Env1-4" position="0.0 -0.30 -1.735" scale="1 1 1" src="#modern-building-window-obj" material="color: skyblue; repeat: 2 2;opacity: 0.4; transparent:true;" shadow="receive: true;" />
                     </Entity>
 
-                    <Entity id="menu-panel">
-                        {/*  Detail Panel */}
-                        <Entity id="detail-panel"></Entity>
-                        <Entity id="selected-object"></Entity>
-                    </Entity>
-
-                    {/*  animation="property: rotation; to: x y+360 z; dur: 5000; loop: true; easing: linear" */}
                     <Entity id="products" className="3d-sample-section">
                         <Entity
                             init-product
@@ -131,65 +106,8 @@ class SceneView extends React.Component {
                         />
                     </Entity>
 
-                    {/*  Avatar */}
-                    <a-mixin id="avatar"></a-mixin>
-                    {/*  geometry="primitive: box; depth: 0.3; height: 0.3; width: 0.3"
-                            material="color: white" */}
-                    <a-camera id="player" position="0 2 0" rotation="0 180 0" wasd-controls="enabled: false" look-controls="reverseTouchDrag: true; reverseMouseDrag: true;" raycaster="objects: .clickable;" cursor="rayOrigin: mouse; fuse: false" look-controls="touchEnabled: true;">  {/*  camera look-controls position="0 2 0" rotation="0 180 0" cursor="rayOrigin: mouse; fuse: false">  raise-the-roof="false" */}
-                        <Entity className="cd-popup"> 
-                        <Entity className="cd-popup-container">
-                            <div className="cd-popup-info-container">
-                            {/*  Brand Name, and Product Name */}         
-                            </div>
-                            <Entity id="cd-popup-object"></Entity>
-                            <Entity className='wrap'>
-                            <Entity className='content'>
-                                <Entity className='displayImg'></Entity>
-                            </Entity>
-                            </Entity>
-                            <Entity className="top-buttons">
-                            <a id="picture-button" className="button" href="#"></a>
-                            <a id="visit-button" className="button" href="https://www.helloboutique.com/2339-0-Small-Zip-Across-Flat-Bag-by-M0851"></a>
-                            </Entity>
-                            <ul className="cd-buttons">
-                            <li><a id="cd-popup-add" href="#">ADD TO CART</a></li>
-                            <li><a id="cd-popup-close" href="#">CLOSE</a></li>
-                            </ul>
-                        </Entity> 
-                        </Entity>
-                    </a-camera>
-                    {/*
-                    <Entity primitive="a-plane" src="#groundTexture" rotation="-90 0 0" height="100" width="100"/>
-                    <Entity primitive="a-light" type="ambient" intensity="2" color="white"/>
-                    <Entity primitive="a-light" type="point" intensity="4" color="white"/>
-                    <Entity primitive="a-sky" height="2048" radius="30" src="#skyTexture" theta-length="90" width="2048"/>
-                    <Entity id="infoText" text={{value: 'Select an object to move.'}} position={{x: 0, y: 2, z: -1}}/> 
-                    
-                    <Entity
-                        id="redSphere"
-                        geometry={{primitive: 'sphere', radius: 0.5}}
-                        material={{color: 'red'}}
-                        position={{x: 1, y: 1, z: -3}}
-                        class="clickable"
-                        events={{
-                            mousedown: this.selectObject.bind(this),
-                            mouseup: this.deselectObject.bind(this)
-                        }}
-                    />
-                    <Entity
-                        id="greenBox"
-                        geometry={{primitive: 'box'}}
-                        material={{color: 'green'}}
-                        position={{x: -1, y: 1, z: -3}}
-                        class="clickable"
-                        events={{
-                            mousedown: this.selectObject.bind(this),
-                            mouseup: this.deselectObject.bind(this)
-                        }}
-                    /> 
-
-                    <Entity primitive="a-camera" position="0 2 0" wasd-controls="enabled: false" look-controls="reverseTouchDrag: true; reverseMouseDrag: true;" mouse-cursor cursor="rayOrigin: mouse;" raycaster="objects: .clickable;" />
-                    */}
+                    {/* camera */}
+                    <Entity primitive="a-camera"  id="player" position="0 2 0" rotation="0 180 0" wasd-controls="enabled: false" look-controls="reverseTouchDrag: true; reverseMouseDrag: true;" raycaster="objects: .clickable;" cursor="rayOrigin: mouse; fuse: false" look-controls="touchEnabled: true;" />
                 </Scene>
                 }
             </div>

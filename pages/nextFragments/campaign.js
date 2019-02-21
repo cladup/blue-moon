@@ -11,6 +11,7 @@ class Campaign extends Component {
     }
 
     render() {
+        const displayStands = this.props.displayStands;
         return (
             <div>
                 <h5 className="box-white row">{this.props.name}</h5>
@@ -20,18 +21,17 @@ class Campaign extends Component {
                     </div>
                     <div className="col box-white">
                         <h6>Products</h6>
-                        <Product name="product 1" />
-                        <Product name="product 2" />
-                        <Product name="product 3" />
+                            {displayStands.map((displayStand) => {     
+                                return (<Product name={displayStand.products[0].name} />)
+                            })}
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-9 box-white">
                         <h6>Furnitures</h6>
-                        <Product name="Furniture 1" />
-                        <Product name="Furniture 2" />
-                        <Product name="Furniture 3" />
-                        <Product name="Furniture 4" />
+                            {displayStands.map((displayStand) => {     
+                                return (<Product name={displayStand.products[0].type} />)
+                            })}
                     </div>
                     <div className="col text-center">(storage_info)</div>
                 </div>
