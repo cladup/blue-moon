@@ -1,6 +1,5 @@
 AFRAME.registerComponent('init-product', {
     init: function () {
-        console.log("yoyo");
         this.el.addEventListener('model-loaded', function ( obj ) {
             console.log(obj.target.id + " has recentered.");
             let box = new THREE.Box3().setFromObject(obj.target.object3D);
