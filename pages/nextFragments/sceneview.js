@@ -21,14 +21,10 @@ class SceneView extends React.Component {
 
     selectObject = (args) => {
         args.target.setAttribute('wasd-controls', {enabled: 'true'});
-        // let infoText = document.getElementById('infoText');
-        // infoText.setAttribute('text', {value:'currently selected object: '+this.state.selectedObjId});
     }
     
     deselectObject = (args) => {
         args.target.setAttribute('wasd-controls', {enabled: 'false'});
-        // let infoText = document.getElementById('infoText');
-        // infoText.setAttribute('text', {value:'Select an object to move.'});
     }
 
     render() {

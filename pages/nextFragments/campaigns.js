@@ -33,7 +33,6 @@ class Campaigns extends Component {
                 });
             }
         )
-
     }
 
     render() {
