@@ -9,6 +9,12 @@ app.prepare()
 .then(() => {
   const server = express()
   
+  server.get('/', (req, res) => {
+    if(req.params.page == undefined)  {
+      res.redirect('/Campaigns');
+    }
+  })
+
   server.get('/:page', (req, res) => {
     const actualPage = '/index'
     const queryParams = { page: req.params.page } 

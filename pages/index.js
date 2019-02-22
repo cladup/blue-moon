@@ -18,7 +18,7 @@ class Index extends Component {
     }
 
     render() {
-        console.log(this.props.router.query.page);
+        // console.log(this.props.router.query.page);
         return (
             <div>
                 <Head>

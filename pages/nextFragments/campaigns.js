@@ -50,16 +50,9 @@ class Campaigns extends Component {
                         <h5>All Campaigns</h5>
                         <div className="box-white">
                             {campaigns.map((campaign) => {     
-                                return campaign.title;
+                                return campaign.title
                             })}
                         </div>
-
-                        {/* <div className="box-white">Campaign 1</div>
-                        <div className="box-white">Campaign 2</div>
-                        <div className="box-white">Campaign 3</div>
-                        <div className="box-white">Campaign 4</div>
-                        <div className="box-white">Campaign 5</div>
-                        <div className="box-white">Campaign 6</div> */}
                     </div>
                 </div>
                 <div className="col">
