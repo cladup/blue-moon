@@ -28,6 +28,20 @@ class SceneView extends React.Component {
     }
 
     render() {
+        let displayStands = this.props.displayStands;
+
+        console.log(displayStands.length+" display stands in the scene.");
+        displayStands.forEach(function(displayStand) {
+            console.log("display stand "+displayStand.id + ". "+displayStand.name + ": " +displayStand.products.length +" products.");
+
+            displayStand.products.forEach(function(product) {
+                console.log("product "+product.id+". "+product.name
+                        +"\n position at ("+product.position_x+", "+product.position_y+", "+product.position_z+")"
+                        +"\n rotation of ("+product.rotation_x+", "+product.rotation_y+", "+product.rotation_z+")"
+                        +"\n scale of "+product.scale);
+            });
+          });
+
         return (
             <div style={{ height: '100%', width: '100%' }}>
                 {this.state.appRendered &&
@@ -57,14 +71,6 @@ class SceneView extends React.Component {
                         <Entity light="type: ambient; intensity: 0.5; castShadow: false;" position="0 1 0" />
                         <Entity light="type: directional; intensity: 0.5; castShadow: true; shadowCameraTop: 10; shadowCameraRight: 10; shadowCameraBottom: -10; shadowCameraLeft: -10" position="-14 40 0" />
 
-                        {/* <Entity id="floor" geometry="primitive: plane; height: 25; width: 25"
-                            material="repeat: 50 50; src: #grayCarpetfloor; width: 25"
-                            rotation="-90 0 0" position="0 0 0"></Entity>
-                        <Entity geometry="primitive: cylinder; openEnded: true; radius: 10; height: 10" material="side: double"
-                            position="0 3.5 0"></Entity>
-                        <a-curvedimage src="#wallBack" height="40" radius="40" theta-length="360" shader="flat"
-                        rotation="0 0 0" position="0 10 0"></a-curvedimage> 
-                        <a-sky src="#wallBack" radius="60" position="0 -5 0"></a-sky> */}
                         <Entity environment="   preset: forest; 
                                                 shadow: false; 
                                                 skyType: atmosphere; 

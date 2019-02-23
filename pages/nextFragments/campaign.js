@@ -17,7 +17,7 @@ class Campaign extends Component {
                 <h5 className="box-white row">{this.props.name}</h5>
                 <div className="row">
                     <div className="col-9 box-white virtual-env-scene-viewport">
-                        <SceneView />
+                        <SceneView displayStands={displayStands} />
                     </div>
                     <div className="col box-white">
                         <h6>Products</h6>
@@ -28,7 +28,7 @@ class Campaign extends Component {
                 </div>
                 <div className="row">
                     <div className="col-9 box-white">
-                        <h6>Furnitures</h6>
+                        <h6>Display Stands</h6>
                             {displayStands.map((displayStand) => {     
                                 return (<Product key={displayStand.products[0].id} name={displayStand.products[0].type} />)
                             })}
