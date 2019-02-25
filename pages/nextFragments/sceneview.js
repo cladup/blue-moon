@@ -109,7 +109,7 @@ class SceneView extends React.Component {
                     </Entity>
 
                     {/* camera */}
-                    <Entity primitive="a-camera"  id="player" position="0 2 0" rotation="0 180 0" wasd-controls="enabled: false" look-controls="reverseTouchDrag: true; reverseMouseDrag: true;" raycaster="objects: .clickable;" cursor="rayOrigin: mouse; fuse: false" look-controls="touchEnabled: true;" />
+                    <Entity primitive="a-camera"  id="player" position="0 2 0" rotation="0 180 0" wasd-controls="enabled: false" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;" raycaster="objects: .clickable;" cursor="rayOrigin: mouse; fuse: false" />
                 </Scene>
                 }
             </div>

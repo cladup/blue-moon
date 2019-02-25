@@ -1,18 +1,27 @@
 import React, {Component} from 'react'
+import Link from 'next/link'
 import Campaign from './campaign'
+
+
+const PostLink = (props) => (
+    <Link as={`/Campaigns/${props.campaignId}`} href={`/?page=Campaigns&campaignId=${props.campaignId}`}>
+        <a className="nav-link">{props.campaignTitle}</a>
+    </Link>
+)
 
 class Campaigns extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: null,
-            isLoaded: false,
-            campaigns: []
+            error: null,        // api server - get error
+            isLoaded: false,    // api server - get flag
+            campaigns: [],
         };
-                
     }
     
     componentDidMount() {
+        //=====================================================================
+        // get all the campaign infomations from api server
         const CAMPAIGN_API_URL = 'http://stolenbyte.kr:8080/api/campaign/get';
         fetch(CAMPAIGN_API_URL)
             .then(res => res.json())
@@ -33,15 +42,17 @@ class Campaigns extends Component {
                 });
             }
         )
+        //=====================================================================
     }
 
     render() {
         const { error, isLoaded, campaigns } = this.state;
-
+        const campaignId = this.props.campaignId-1;
+        console.log(campaigns)
         if (error) {
           return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
-          return <div>Loading campaigns from stolenbyte...</div>;
+          return <div>Loading campaigns from api server...</div>;
         }
         return (
             <div className="row no-padding bg-light-gray">
@@ -49,14 +60,18 @@ class Campaigns extends Component {
                     <div className="box-white">
                         <h5>All Campaigns</h5>
                         <div className="box-white">
-                            {campaigns.map((campaign) => {     
-                                return campaign.title
+                            {campaigns.map((campaign) => {
+                                return (<PostLink key={campaign.id} campaignId={campaign.id} campaignTitle={campaign.title}/>)
                             })}
                         </div>
                     </div>
                 </div>
                 <div className="col">
-                    <Campaign name={campaigns[0].title} displayStands={campaigns[0].display_stands} />
+                    {
+                        (isNaN(campaignId)) 
+                        ? 'Please Select a campaign from the list to the left'
+                        : <Campaign title={campaigns[`${campaignId}`].title} displayStands={campaigns[`${campaignId}`].display_stands} /> 
+                    }
                 </div>
             </div>
 

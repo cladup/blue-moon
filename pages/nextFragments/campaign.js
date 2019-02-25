@@ -14,7 +14,7 @@ class Campaign extends Component {
         const displayStands = this.props.displayStands;
         return (
             <div>
-                <h5 className="box-white row">{this.props.name}</h5>
+                <h5 className="box-white row">{this.props.title}</h5>
                 <div className="row">
                     <div className="col-9 box-white virtual-env-scene-viewport">
                         <SceneView displayStands={displayStands} />

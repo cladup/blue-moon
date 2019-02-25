@@ -18,7 +18,7 @@ class Index extends Component {
     }
 
     render() {
-        // console.log(this.props.router.query.page);
+        // console.log(this.props.router.query);
         return (
             <div>
                 <Head>
@@ -30,7 +30,7 @@ class Index extends Component {
                     <Header nav={this.props.router.query.page} />
                     <div className="row flex-fill d-flex justify-content-start overflow-auto">
                         <div className="col-12 no-padding">
-                            {(this.props.router.query.page == 'Campaigns') ? <Campaigns /> :''}
+                            {(this.props.router.query.page == 'Campaigns') ? <Campaigns campaignId={this.props.router.query.campaignId} /> :''}
                             {(this.props.router.query.page == 'Products') ? <Products /> : ''}
                             {(this.props.router.query.page == undefined) ? '랜딩페이지!' : ''}
                         </div>

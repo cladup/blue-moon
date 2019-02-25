@@ -9,10 +9,19 @@ app.prepare()
 .then(() => {
   const server = express()
   
+  // landing redirect to Campaigns
   server.get('/', (req, res) => {
     if(req.params.page == undefined)  {
       res.redirect('/Campaigns');
     }
+  })
+
+  // page route masking
+
+  server.get('/:page/:campaignId', (req, res) => {
+    const actualPage = '/index'
+    const queryParams = { page: req.params.page, campaignId: req.params.campaignId } 
+    app.render(req, res, actualPage, queryParams)
   })
 
   server.get('/:page', (req, res) => {
