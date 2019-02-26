@@ -1,0 +1,77 @@
+(http://stolenbyte.kr:8080/api/campaign/set/)
+
+{
+    "id": 3,
+    "company": "YC",
+    "title": "Demo Campaign",
+    "position_x": "0.00",
+    "position_y": "2.00",
+    "position_z": "0.00",
+    "rotation_x": "0.00",
+    "rotation_y": "0.00",
+    "rotation_z": "0.00",
+    "display_stands": [
+        {
+            "id": 3,
+            "name": "demoTable",
+            "type": "displayStand",
+            "position_x": "0.40",
+            "position_y": "23.17",
+            "position_z": "-0.50",
+            "rotation_x": "0.00",
+            "rotation_y": "0.00",
+            "rotation_z": "0.00",
+            "scale": "100.00",
+            "format": "default",
+            "click_event": "none",
+            "animation": "none",
+            "products": [
+                {
+                    "id": 3,
+                    "name": "demoBag",
+                    "type": "bag",
+                    "position_x": "0.00",
+                    "position_y": "1.09",
+                    "position_z": "-2.82",
+                    "rotation_x": "0.00",
+                    "rotation_y": "0.00",
+                    "rotation_z": "0.00",
+                    "scale": "0.30",
+                    "format": "default",
+                    "click_event": "ShowDetails",
+                    "animation": "Blink"
+                },
+                {
+                    "id": 4,
+                    "name": "demoShoe",
+                    "type": "shoe",
+                    "position_x": "-2.82",
+                    "position_y": "1.09",
+                    "position_z": "0",
+                    "rotation_x": "0.00",
+                    "rotation_y": "180.00",
+                    "rotation_z": "0.00",
+                    "scale": "3.00",
+                    "format": "default",
+                    "click_event": "ShowDetails",
+                    "animation": "Blink"
+                },
+                {
+                    "id": 5,
+                    "name": "demoShirt",
+                    "type": "shirt",
+                    "position_x": "2.82",
+                    "position_y": "1.09",
+                    "position_z": "0",
+                    "rotation_x": "0.00",
+                    "rotation_y": "90.00",
+                    "rotation_z": "0.00",
+                    "scale": "100.00",
+                    "format": "default",
+                    "click_event": "none",
+                    "animation": "Shake"
+                }
+            ]
+        }
+    ]
+}

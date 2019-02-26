@@ -1,11 +1,47 @@
 import React from 'react';
 import {Entity, Scene} from 'aframe-react';
+import { timingSafeEqual } from 'crypto';
 
 class SceneView extends React.Component {
     constructor(props) {
         super(props);
+        
+        let displayStands = [];
+        let products = [];
+        this.props.displayStands.forEach(function(displayStand) {
+            displayStands = [...displayStands,
+                {
+                    name: displayStand.name,
+                    pos_x: displayStand.position_x,
+                    pos_y: displayStand.position_y,
+                    pos_z: displayStand.position_z,
+                    rot_x: displayStand.rotation_x,
+                    rot_y: displayStand.rotation_y,
+                    rot_z: displayStand.rotation_z,
+                    scale: displayStand.scale
+                }
+            ];
+
+            displayStand.products.forEach(function(product) {
+                products = [...products, 
+                    {
+                        name: product.name,
+                        pos_x: product.position_x,
+                        pos_y: product.position_y,
+                        pos_z: product.position_z,
+                        rot_x: product.rotation_x,
+                        rot_y: product.rotation_y,
+                        rot_z: product.rotation_z,
+                        scale: product.scale
+                    }
+                ];
+            });
+        });
+
         this.state = {
             appRendered: false,
+            displayStands: displayStands,
+            products: products
         };
     }
 
@@ -27,33 +63,9 @@ class SceneView extends React.Component {
     }
 
     render() {
-        let displayStands = this.props.displayStands;
-
-        let tempString = '';
-        let dislayStandsCount=0;
-
-        tempString += "[" + displayStands.length+" display stands in the scene]\n";
-        displayStands.forEach(function(displayStand) {
-            dislayStandsCount++;
-            tempString += dislayStandsCount + ". " + displayStand.name + " (display stand id: " + displayStand.id + ") [product count: " +displayStand.products.length +"]\n";
-
-            let productCount=0;
-            displayStand.products.forEach(function(product) {
-                productCount++;
-                tempString += "___" + productCount + ". " + product.name + " (product id: " + product.id + ")" +
-                    "\n ______ position ("+product.position_x+", "+product.position_y+", "+product.position_z+")" +
-                    "\n ______ rotation ("+product.rotation_x+", "+product.rotation_y+", "+product.rotation_z+")" +
-                    "\n ______ scale "+product.scale + "\n";
-            });
-        });
-
+        console.log(this.state);
         return (
             <div className="height80" style={{ height: '100%', width: '100%' }}>
-                {/* {   
-                    tempString.split('\n').map( line => {
-                        return (<span>{line}<br/></span>)
-                    })
-                } */}
                 {this.state.appRendered &&
                 <Scene embedded vr-mode-ui="enabled: false;" shadow="type: pcf;">
                     <a-assets timeout="3000">
@@ -66,7 +78,10 @@ class SceneView extends React.Component {
                         <img id="wood" src="/static/resources/environments/Enviroment/tiled_circle/water_circle_wood/wood_floor.png" />
 
                         {/*  3D Object */}
-                        <a-asset-item id="beach-bag" src="/static/resources/models/beach_bag/beach_bag.glb" />
+                        {/* <a-asset-item id="beach-bag" src="/static/resources/models/beach_bag/beach_bag.glb" /> */}
+                        <a-asset-item id="demoShirt" src="/static/resources/models/beach_bag/beach_bag.glb" />
+                        <a-asset-item id="demoBag" src="/static/resources/scanned/handbag2p2k.glb" />
+                        <a-asset-item id="demoShoe" src="/static/resources/scanned/vans_blue_shoe.glb" />
 
                         {/*  Environment */}
                         <a-asset-item id="modern-building-gltf" src="/static/resources/environments/Enviroment/enviroment_non_glass.glb" />
@@ -77,9 +92,10 @@ class SceneView extends React.Component {
                     </a-assets>
                     <Entity id="environment">
                         {/*  Lights */}
-                        <Entity light="type: spot; castShadow:false; angle: 70; color: #fdb31a; distance: 20; intensity: 1.5; penumbra: 0.5;" position="0 10 0" rotation="-90 0 0"></Entity>
-                        <Entity light="type: ambient; intensity: 0.5; castShadow: false;" position="0 1 0" />
-                        <Entity light="type: directional; intensity: 0.5; castShadow: true; shadowCameraTop: 10; shadowCameraRight: 10; shadowCameraBottom: -10; shadowCameraLeft: -10" position="-14 40 0" />
+                        {/* <Entity light="type: spot; castShadow:false; angle: 70; color: #FFFFFF; distance: 20; intensity: 3; penumbra: 0.5;" position="0 10 0" rotation="-90 0 0"></Entity> */}
+                        <Entity id="ambientLight" light="type: ambient; intensity: 1; castShadow: false;" position="0 1 0" />
+                        <Entity id="spotLight" light="type: point; intensity: 2; castShadow: true; distance: 10" position="0 3 0" />
+                        {/* <Entity light="type: directional; intensity: 0.5; castShadow: true; shadowCameraTop: 10; shadowCameraRight: 10; shadowCameraBottom: -10; shadowCameraLeft: -10" position="-14 40 0" /> */}
 
                         <Entity environment="   preset: forest; 
                                                 shadow: false; 
@@ -103,19 +119,29 @@ class SceneView extends React.Component {
                     </Entity>
 
                     <Entity id="products" className="3d-sample-section">
-                        <Entity
-                            init-product
-                            id="bag-sample-1"
-                            position="0 1.06 -2.63"
-                            rotation="0 0 0"
-                            scale="100 100 100"
-                            gltf-model="#beach-bag"
-                            class="clickable"
-                            events={{
-                                mousedown: this.selectObject.bind(this),
-                                mouseup: this.deselectObject.bind(this)
-                            }}
-                        />
+                        {
+                            this.state.products.map((product) => {
+                                let position3 = product.pos_x + " " + product.pos_y + " " + product.pos_z;
+                                let rotation3 = product.rot_x + " " + product.rot_y + " " + product.rot_z;
+                                let scale3 = product.scale + " " + product.scale + " " + product.scale;
+                                let gltfModel = "#"+product.name;
+                                return (
+                                    <Entity
+                                    init-product
+                                    id={product.name}
+                                    position={position3}
+                                    rotation={rotation3}
+                                    scale={scale3}
+                                    gltf-model={gltfModel}
+                                    class="clickable"
+                                    events={{
+                                        mousedown: this.selectObject.bind(this),
+                                        mouseup: this.deselectObject.bind(this)
+                                    }}
+                                />
+                                )
+                            })
+                        }
                     </Entity>
 
                     {/* camera */}

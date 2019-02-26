@@ -29,7 +29,6 @@ class Campaign extends Component {
                             {displayStands.map((displayStand) => {
                                 return (
                                     displayStand.products.map((product) => {
-                                        console.log(product.name);
                                         return (<div key={product.id} className="box-white">{product.name}</div>)
                                 }))
                             })}
