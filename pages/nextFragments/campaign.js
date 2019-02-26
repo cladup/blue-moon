@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import Product from './product'
 import SceneView from './sceneview';
 
 class Campaign extends Component {
@@ -11,29 +10,41 @@ class Campaign extends Component {
     }
 
     render() {
-        const displayStands = this.props.displayStands;
+        let displayStands = this.props.displayStands;
+
         return (
             <div>
-                <h5 className="box-white row">{this.props.title}</h5>
                 <div className="row">
-                    <div className="col-9 box-white virtual-env-scene-viewport">
-                        <SceneView displayStands={displayStands} />
-                    </div>
-                    <div className="col box-white">
-                        <h6>Products</h6>
-                            {displayStands.map((displayStand) => {     
-                                return (<Product key={displayStand.products[0].id} name={displayStand.products[0].name} />)
-                            })}
-                    </div>
+                    <h5 className="box-white">{this.props.title}</h5>
                 </div>
                 <div className="row">
                     <div className="col-9 box-white">
-                        <h6>Display Stands</h6>
-                            {displayStands.map((displayStand) => {     
-                                return (<Product key={displayStand.products[0].id} name={displayStand.products[0].type} />)
-                            })}
+                        <SceneView displayStands={displayStands} />
                     </div>
-                    <div className="col text-center">(storage_info)</div>
+                    <div className="col-3">
+                        <div className="box-white">
+                            <div className="box-white">
+                                <h6>Products</h6>
+                            </div>
+                            {displayStands.map((displayStand) => {
+                                return (
+                                    displayStand.products.map((product) => {
+                                        console.log(product.name);
+                                        return (<div key={product.id} className="box-white">{product.name}</div>)
+                                }))
+                            })}
+                        </div>
+                        <div className="box-white">
+                            <div className="box-white">
+                                <h6>Display Stands</h6>
+                            </div>
+                            {displayStands.map((displayStand) => {
+                                return (<div key={displayStand.id} className="box-white">{displayStand.name}</div>)
+                            })}
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
                 </div>
             </div>
         )

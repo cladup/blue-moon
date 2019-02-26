@@ -16,7 +16,6 @@ class SceneView extends React.Component {
             require('./init-product.js');
             this.setState({ appRendered: true })
         }
-
     }
 
     selectObject = (args) => {
@@ -30,20 +29,31 @@ class SceneView extends React.Component {
     render() {
         let displayStands = this.props.displayStands;
 
-        console.log(displayStands.length+" display stands in the scene.");
-        displayStands.forEach(function(displayStand) {
-            console.log("display stand "+displayStand.id + ". "+displayStand.name + ": " +displayStand.products.length +" products.");
+        let tempString = '';
+        let dislayStandsCount=0;
 
+        tempString += "[" + displayStands.length+" display stands in the scene]\n";
+        displayStands.forEach(function(displayStand) {
+            dislayStandsCount++;
+            tempString += dislayStandsCount + ". " + displayStand.name + " (display stand id: " + displayStand.id + ") [product count: " +displayStand.products.length +"]\n";
+
+            let productCount=0;
             displayStand.products.forEach(function(product) {
-                console.log("product "+product.id+". "+product.name
-                        +"\n position at ("+product.position_x+", "+product.position_y+", "+product.position_z+")"
-                        +"\n rotation of ("+product.rotation_x+", "+product.rotation_y+", "+product.rotation_z+")"
-                        +"\n scale of "+product.scale);
+                productCount++;
+                tempString += "___" + productCount + ". " + product.name + " (product id: " + product.id + ")" +
+                    "\n ______ position ("+product.position_x+", "+product.position_y+", "+product.position_z+")" +
+                    "\n ______ rotation ("+product.rotation_x+", "+product.rotation_y+", "+product.rotation_z+")" +
+                    "\n ______ scale "+product.scale + "\n";
             });
-          });
+        });
 
         return (
-            <div style={{ height: '100%', width: '100%' }}>
+            <div className="height80" style={{ height: '100%', width: '100%' }}>
+                {/* {   
+                    tempString.split('\n').map( line => {
+                        return (<span>{line}<br/></span>)
+                    })
+                } */}
                 {this.state.appRendered &&
                 <Scene embedded vr-mode-ui="enabled: false;" shadow="type: pcf;">
                     <a-assets timeout="3000">

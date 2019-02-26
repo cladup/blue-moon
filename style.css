@@ -25,10 +25,19 @@ html,body
     background-color: white;
 }
 
-.virtual-env-scene-viewport
+.height10
 {
-    height: 70vh;
+    height: 10vh !important;
 }
+.height80
+{
+    height: 80vh !important;
+}
+.height90
+{
+    height: 90vh !important;
+}
+
 .no-margin
 {
     margin: 0;
@@ -47,8 +56,4 @@ html,body
   flex-direction: column;
   justify-content: center;
   height: 100%;
-}
-
-a {
-    color: #00B7FF;
 }

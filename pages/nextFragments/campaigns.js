@@ -48,25 +48,26 @@ class Campaigns extends Component {
     render() {
         const { error, isLoaded, campaigns } = this.state;
         const campaignId = this.props.campaignId-1;
-        console.log(campaigns)
+        
         if (error) {
           return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
           return <div>Loading campaigns from api server...</div>;
         }
         return (
-            <div className="row no-padding bg-light-gray">
-                <div className="col-2 no-padding">
+            <div className="row bg-light-gray height90">
+                <div className="col-2">
                     <div className="box-white">
                         <h5>All Campaigns</h5>
-                        <div className="box-white">
-                            {campaigns.map((campaign) => {
-                                return (<PostLink key={campaign.id} campaignId={campaign.id} campaignTitle={campaign.title}/>)
-                            })}
-                        </div>
                     </div>
+                    <div className="box-white">
+                        {campaigns.map((campaign) => {
+                            return (<PostLink key={campaign.id} campaignId={campaign.id} campaignTitle={campaign.title}/>)
+                        })}
+                    </div>
+                    <div className="box-white text-center">(CLOUD STORAGE INFORMATION)</div>
                 </div>
-                <div className="col">
+                <div className="col-10">
                     {
                         (isNaN(campaignId)) 
                         ? 'Please Select a campaign from the list to the left'
