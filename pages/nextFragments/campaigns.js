@@ -2,9 +2,9 @@ import React, {Component} from 'react'
 import Link from 'next/link'
 import Campaign from './campaign'
 
-
 const PostLink = (props) => (
-    <Link as={`/Campaigns/${props.campaignId}`} href={`/?page=Campaigns&campaignId=${props.campaignId}`}>
+    //<Link as={`/Campaigns/${props.campaignId}`} href={`/index?page=Campaigns&campaignId=${props.campaignId}`}>
+    <Link as={`/Campaigns/${props.campaignId}`} href={`/Campaigns/${props.campaignId}`}>
         <a className="nav-link">{props.campaignTitle}</a>
     </Link>
 )
@@ -70,7 +70,7 @@ class Campaigns extends Component {
                 <div className="col-10">
                     {
                         (isNaN(campaignId)) 
-                        ? 'Please Select a campaign from the list to the left'
+                        ? 'Please select a campaign from the list to the left'
                         : <Campaign title={campaigns[`${campaignId}`].title} displayStands={campaigns[`${campaignId}`].display_stands} /> 
                     }
                 </div>

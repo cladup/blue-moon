@@ -1,14 +1,13 @@
-import React from 'react';
 import {Entity, Scene} from 'aframe-react';
-import { timingSafeEqual } from 'crypto';
+import React, {Component} from 'react'
 
-class SceneView extends React.Component {
+class SceneView extends Component {
     constructor(props) {
         super(props);
-        
+
         let displayStands = [];
         let products = [];
-        this.props.displayStands.forEach(function(displayStand) {
+        props.displayStands.forEach(function(displayStand) {
             displayStands = [...displayStands,
                 {
                     name: displayStand.name,
@@ -63,10 +62,12 @@ class SceneView extends React.Component {
     }
 
     render() {
-        console.log(this.state);
+        const appRendered = this.state.appRendered;
+        const products = this.state.products;
+        
         return (
             <div className="height80" style={{ height: '100%', width: '100%' }}>
-                {this.state.appRendered &&
+                {appRendered &&
                 <Scene embedded vr-mode-ui="enabled: false;" shadow="type: pcf;">
                     <a-assets timeout="3000">
                         {/*  Images */}
@@ -77,17 +78,17 @@ class SceneView extends React.Component {
                         <img id="iron-wall" src="/static/resources/environments/Enviroment/tiled_circle/iron_wall/iron_wall.png" />
                         <img id="wood" src="/static/resources/environments/Enviroment/tiled_circle/water_circle_wood/wood_floor.png" />
 
-                        {/*  3D Object */}
-                        {/* <a-asset-item id="beach-bag" src="/static/resources/models/beach_bag/beach_bag.glb" /> */}
-                        <a-asset-item id="demoShirt" src="/static/resources/models/beach_bag/beach_bag.glb" />
-                        <a-asset-item id="demoBag" src="/static/resources/scanned/handbag2p2k.glb" />
-                        <a-asset-item id="demoShoe" src="/static/resources/scanned/vans_blue_shoe.glb" />
-
                         {/*  Environment */}
                         <a-asset-item id="modern-building-gltf" src="/static/resources/environments/Enviroment/enviroment_non_glass.glb" />
                         <a-asset-item id="modern-building-iron-wall-obj" src="/static/resources/environments/Enviroment/tiled_circle/iron_wall/tiled_circle_iron_wall_exterior.obj" />
                         <a-asset-item id="modern-building-water-circle-obj" src="/static/resources/environments/Enviroment/tiled_circle/water_circle_wood/outer_water_circle.obj" />
                         <a-asset-item id="modern-building-window-obj" src="/static/resources/environments/Enviroment/glass/glass_no_transparency.obj" />
+
+                        {/*  3D Object */}
+                        {/* <a-asset-item id="beach-bag" src="/static/resources/models/beach_bag/beach_bag.glb" /> */}
+                        <a-asset-item id="demoShirt" src="/static/resources/models/beach_bag/beach_bag.glb" />
+                        <a-asset-item id="demoBag" src="/static/resources/scanned/handbag2p2k.glb" />
+                        <a-asset-item id="demoShoe" src="/static/resources/scanned/vans_blue_shoe.glb" />
 
                     </a-assets>
                     <Entity id="environment">
@@ -120,31 +121,31 @@ class SceneView extends React.Component {
 
                     <Entity id="products" className="3d-sample-section">
                         {
-                            this.state.products.map((product) => {
+                            products.map((product) => {
                                 let position3 = product.pos_x + " " + product.pos_y + " " + product.pos_z;
                                 let rotation3 = product.rot_x + " " + product.rot_y + " " + product.rot_z;
                                 let scale3 = product.scale + " " + product.scale + " " + product.scale;
                                 let gltfModel = "#"+product.name;
                                 return (
                                     <Entity
-                                    init-product
-                                    id={product.name}
-                                    position={position3}
-                                    rotation={rotation3}
-                                    scale={scale3}
-                                    gltf-model={gltfModel}
-                                    class="clickable"
-                                    events={{
-                                        mousedown: this.selectObject.bind(this),
-                                        mouseup: this.deselectObject.bind(this)
-                                    }}
-                                />
+                                        init-product
+                                        key={product.name}
+                                        id={product.name}
+                                        position={position3}
+                                        rotation={rotation3}
+                                        scale={scale3}
+                                        gltf-model={gltfModel}
+                                        class="clickable"
+                                        events={{
+                                            mousedown: this.selectObject.bind(this),
+                                            mouseup: this.deselectObject.bind(this)
+                                        }}
+                                    />
                                 )
                             })
                         }
                     </Entity>
 
-                    {/* camera */}
                     <Entity primitive="a-camera"  id="player" position="0 2 0" rotation="0 180 0" wasd-controls="enabled: false" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;" raycaster="objects: .clickable;" cursor="rayOrigin: mouse; fuse: false" />
                 </Scene>
                 }
