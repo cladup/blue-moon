@@ -16,14 +16,15 @@ class Campaigns extends Component {
             error: null,        // api server - get error
             isLoaded: false,    // api server - get flag
             campaigns: [],
+            campaign: null
         };
     }
     
     componentDidMount() {
         //=====================================================================
         // get all the campaign infomations from api server
-        const CAMPAIGN_API_URL = 'http://stolenbyte.kr:8080/api/campaign/get';
-        fetch(CAMPAIGN_API_URL)
+        const CAMPAIGN_LIST_API_URL = 'http://stolenbyte.kr:8080/api/campaign/get/';
+        fetch(CAMPAIGN_LIST_API_URL)
             .then(res => res.json())
             .then(
             (result) => {
@@ -42,13 +43,44 @@ class Campaigns extends Component {
                 });
             }
         )
+        
+        //=====================================================================
+        // get the selected campaign infomation from api server------------------------------------------------------------------------여기가 안됨. campaign이 안불림.왜!?
+        let campaignId = this.props.campaignId;
+        if(!isNaN(campaignId)) {
+            const CAMPAIGN_API_URL = 'http://stolenbyte.kr:8080/api/campaign/get/'+campaignId;
+
+            console.log(CAMPAIGN_API_URL);
+
+            fetch(CAMPAIGN_API_URL)
+                .then(res => res.json())
+                .then(
+                (result) => {
+                    this.setState({
+                        isLoaded: true,
+                        campaign: result
+                    });
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )
+        }
         //=====================================================================
     }
 
     render() {
-        const { error, isLoaded, campaigns } = this.state;
-        const campaignId = this.props.campaignId-1;
-        
+        const { error, isLoaded, campaigns, campaign } = this.state;
+        const campaignId = this.props.campaignId;
+
+        console.log(this.state);
+
         if (error) {
           return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -71,7 +103,7 @@ class Campaigns extends Component {
                     {
                         (isNaN(campaignId)) 
                         ? 'Please select a campaign from the list to the left'
-                        : <Campaign title={campaigns[`${campaignId}`].title} displayStands={campaigns[`${campaignId}`].display_stands} /> 
+                        : <Campaign title={campaign.title} displayStands={campaign.display_stands} /> 
                     }
                 </div>
             </div>
