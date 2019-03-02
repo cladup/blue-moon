@@ -10,6 +10,7 @@ class SceneView extends Component {
         props.displayStands.forEach(function(displayStand) {
             displayStands = [...displayStands,
                 {
+                    id: displayStands.id,
                     name: displayStand.name,
                     pos_x: displayStand.position_x,
                     pos_y: displayStand.position_y,
@@ -24,6 +25,7 @@ class SceneView extends Component {
             displayStand.products.forEach(function(product) {
                 products = [...products, 
                     {
+                        id: product.id,
                         name: product.name,
                         pos_x: product.position_x,
                         pos_y: product.position_y,
@@ -42,6 +44,7 @@ class SceneView extends Component {
             displayStands: displayStands,
             products: products
         };
+
     }
 
     componentDidMount() {
@@ -59,11 +62,13 @@ class SceneView extends Component {
     
     deselectObject = (args) => {
         args.target.setAttribute('wasd-controls', {enabled: 'false'});
+        this.props.sendProductTransform(args.target.productId, args.target.getAttribute('position'));
     }
 
     render() {
         const appRendered = this.state.appRendered;
-        const products = this.state.products;
+        let products = this.state.products;
+        let displayStands = this.state.displayStands;
         
         return (
             <div className="height80" style={{ height: '100%', width: '100%' }}>
@@ -79,13 +84,14 @@ class SceneView extends Component {
                         <img id="wood" src="/static/resources/environments/Enviroment/tiled_circle/water_circle_wood/wood_floor.png" />
 
                         {/*  Environment */}
+                        <a-asset-item id="demoTable" src="/static/resources/environments/Enviroment/enviroment_non_glass.glb" />
                         <a-asset-item id="modern-building-gltf" src="/static/resources/environments/Enviroment/enviroment_non_glass.glb" />
                         <a-asset-item id="modern-building-iron-wall-obj" src="/static/resources/environments/Enviroment/tiled_circle/iron_wall/tiled_circle_iron_wall_exterior.obj" />
                         <a-asset-item id="modern-building-water-circle-obj" src="/static/resources/environments/Enviroment/tiled_circle/water_circle_wood/outer_water_circle.obj" />
                         <a-asset-item id="modern-building-window-obj" src="/static/resources/environments/Enviroment/glass/glass_no_transparency.obj" />
 
                         {/*  3D Object */}
-                        {/* <a-asset-item id="beach-bag" src="/static/resources/models/beach_bag/beach_bag.glb" /> */}
+                        <a-asset-item id="bag-sample-2" src="/static/resources/models/beach_bag/beach_bag.glb" />
                         <a-asset-item id="demoShirt" src="/static/resources/models/beach_bag/beach_bag.glb" />
                         <a-asset-item id="demoBag" src="/static/resources/scanned/handbag2p2k.glb" />
                         <a-asset-item id="demoShoe" src="/static/resources/scanned/vans_blue_shoe.glb" />
@@ -113,13 +119,24 @@ class SceneView extends Component {
                         />
 
                         {/*  3D Model */}
-                        <Entity id="Env1-1" position="0.4 23.17 -0.5" scale="100 100 100" gltf-model="#modern-building-gltf" shadow="receive: true;" />
+                        {/* <Entity id="Env1-1" position="0.4 23.17 -0.5" scale="100 100 100" gltf-model="#modern-building-gltf" shadow="receive: true;" /> */}
                         <a-obj-model id="Env1-2" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-iron-wall-obj" material="src: #iron-wall; repeat: 3 3; transparent:true;" shadow="receive: true;" />
                         <a-obj-model id="Env1-3" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-water-circle-obj" material="src: #wood; repeat: 10 10;" shadow="receive: true;" />
                         <a-obj-model id="Env1-4" position="0.0 -0.30 -1.735" scale="1 1 1" src="#modern-building-window-obj" material="color: skyblue; repeat: 2 2;opacity: 0.4; transparent:true;" shadow="receive: true;" />
                     </Entity>
 
                     <Entity id="products" className="3d-sample-section">
+                        {
+                            displayStands.map((displayStand) => {
+                                let position3 = displayStand.pos_x + " " + displayStand.pos_y + " " + displayStand.pos_z;
+                                let rotation3 = displayStand.rot_x + " " + displayStand.rot_y + " " + displayStand.rot_z;
+                                let DSScale3 = displayStand.scale + " " + displayStand.scale + " " + displayStand.scale;
+                                let modelId = "#"+displayStand.name;
+                                return (
+                                    <Entity id={displayStand.name} key={displayStand.name} position={position3} rotation={rotation3} scale={DSScale3} gltf-model={modelId} shadow="receive: true;" /    >
+                                )
+                            })
+                        }
                         {
                             products.map((product) => {
                                 let position3 = product.pos_x + " " + product.pos_y + " " + product.pos_z;
@@ -131,6 +148,7 @@ class SceneView extends Component {
                                         init-product
                                         key={product.name}
                                         id={product.name}
+                                        productId={product.id}
                                         position={position3}
                                         rotation={rotation3}
                                         scale={scale3}

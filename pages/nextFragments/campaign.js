@@ -1,52 +1,106 @@
 import React, {Component} from 'react'
 import SceneView from './sceneview';
+import redirect from 'next-redirect'
 
 class Campaign extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
+            campaignId: null,
+            displayStands: [],
+            isLoaded: false,
+            isCampaignDeleted: false
         };
+
+        this.deleteCampaign = this.deleteCampaign.bind(this);
+        this.getProductTransform = this.getProductTransform.bind(this);
+    }
+
+    getProductTransform(productId, productPos) {
+        console.log("productId: " + productId);
+        console.log("productPosX: " + productPos.x);
+        // setstate for displayStands - product
+    }
+
+    componentDidMount() {
+        this.setState({
+            campaignId: this.props.campaignId,
+            displayStands: this.props.displayStands,
+            isLoaded: true
+        })
+    }
+
+    deleteCampaign() {
+        console.log("send delete campaign " + this.state.campaignId + " request");
+        
+        let campaignId = this.props.campaignId;
+        const CAMPAIGN_API_URL = 'http://stolenbyte.kr:8080/api/v1/campaigns/'+campaignId;
+
+        fetch(CAMPAIGN_API_URL, {
+            method: 'DELETE'
+        })
+        .then(data => {
+            console.log("campaign " + this.state.campaignId + " deleted.");
+            return redirect('', '/')
+        })
     }
 
     render() {
-        let displayStands = this.props.displayStands;
-
-        return (
-            <div>
-                <div className="row">
-                    <h5 className="box-white">{this.props.title}</h5>
-                </div>
-                <div className="row">
-                    <div className="col-9 box-white">
-                        <SceneView displayStands={displayStands} />
-                    </div>
-                    <div className="col-3">
-                        <div className="box-white">
-                            <div className="box-white">
-                                <h6>Products</h6>
-                            </div>
-                            {displayStands.map((displayStand) => {
-                                return (
-                                    displayStand.products.map((product) => {
-                                        return (<div key={product.id} className="box-white">{product.name}</div>)
-                                }))
-                            })}
+        let displayStands = this.state.displayStands;
+        if (!this.state.isLoaded) {
+            return <div>loading scene</div>
+        } else {
+            return (
+                <div>
+                    <div className="row">
+                        <div className="col-10">
+                            <h5 className="box-white">
+                                {this.props.title}
+                            </h5>
                         </div>
-                        <div className="box-white">
-                            <div className="box-white">
-                                <h6>Display Stands</h6>
+                        <div className="col-1">
+                            <div className="align-middle">
+                                <button className="btn btn-primary" onClick={this.saveCampaign}>save</button>
                             </div>
-                            {displayStands.map((displayStand) => {
-                                return (<div key={displayStand.id} className="box-white">{displayStand.name}</div>)
-                            })}
+                        </div>
+                        <div className="col-1">
+                            <div className="align-middle">
+                                <button className="btn btn-primary" onClick={this.deleteCampaign}>delete</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div className="row">
+                        <div className="col-9 box-white">
+                            <SceneView displayStands={displayStands} sendProductTransform={this.getProductTransform} />
+                        </div>
+                        <div className="col-3">
+                            <div className="box-white">
+                                <div className="box-white">
+                                    <h6>Products</h6>
+                                </div>
+                                {displayStands.map((displayStand) => {
+                                    return (
+                                        displayStand.products.map((product) => {
+                                            return (<div key={product.id} className="box-white">{product.name}</div>)
+                                    }))
+                                })}
+                            </div>
+                            <div className="box-white">
+                                <div className="box-white">
+                                    <h6>Display Stands</h6>
+                                </div>
+                                {displayStands.map((displayStand) => {
+                                    return (<div key={displayStand.id} className="box-white">{displayStand.name}</div>)
+                                })}
+                            </div>
                         </div>
                     </div>
+                    <div className="row">
+                    </div>
                 </div>
-                <div className="row">
-                </div>
-            </div>
-        )
+            )
+        }
     }
 }
 
