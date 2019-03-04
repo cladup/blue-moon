@@ -8,9 +8,8 @@ class Campaign extends Component {
         this.state = {
             CAMPAIGN_API_URL: props.campaignApiUrl,
             OBJECT_URL: props.objectUrl,
-            campaignId: null,
-            displayStands: [],
-            isLoaded: false,
+            campaignId: props.campaignId,
+            displayStands: props.displayStands,
             isCampaignDeleted: false
         };
 
@@ -18,18 +17,9 @@ class Campaign extends Component {
         this.getProductTransform = this.getProductTransform.bind(this);
     }
 
-    getProductTransform(productId, productPos) {
+    getProductTransform(productId, newPosition) {
         console.log("productId: " + productId);
-        console.log("productPosX: " + productPos.x);
-        // setstate for displayStands - product
-    }
-
-    componentDidMount() {
-        this.setState({
-            campaignId: this.props.campaignId,
-            displayStands: this.props.displayStands,
-            isLoaded: true
-        })
+        console.log("newPosition: " + newPosition.x.toFixed(2) + " "  + newPosition.y.toFixed(2) + " " + newPosition.z.toFixed(2));
     }
 
     deleteCampaign() {
@@ -48,60 +38,56 @@ class Campaign extends Component {
 
     render() {
         let displayStands = this.state.displayStands;
-        if (!this.state.isLoaded) {
-            return <div>loading scene</div>
-        } else {
-            return (
-                <div>
-                    <div className="row">
-                        <div className="col-10">
-                            <h5 className="box-white">
-                                {this.props.title}
-                            </h5>
-                        </div>
-                        <div className="col-1">
-                            <div className="align-middle">
-                                <button className="btn btn-primary" onClick={this.saveCampaign}>save</button>
-                            </div>
-                        </div>
-                        <div className="col-1">
-                            <div className="align-middle">
-                                <button className="btn btn-primary" onClick={this.deleteCampaign}>delete</button>
-                            </div>
-                        </div>
-                        
+        return (
+            <div>
+                <div className="row">
+                    <div className="col-10">
+                        <h5 className="box-white">
+                            {this.props.title}
+                        </h5>
                     </div>
-                    <div className="row">
-                        <div className="col-9 box-white">
-                            <SceneView displayStands={displayStands} sendProductTransform={this.getProductTransform} />
-                        </div>
-                        <div className="col-3">
-                            <div className="box-white">
-                                <div className="box-white">
-                                    <h6>Products</h6>
-                                </div>
-                                {displayStands.map((displayStand) => {
-                                    return (
-                                        displayStand.products.map((product) => {
-                                            return (<div key={product.id} className="box-white">{product.name}</div>)
-                                    }))
-                                })}
-                            </div>
-                            <div className="box-white">
-                                <div className="box-white">
-                                    <h6>Display Stands</h6>
-                                </div>
-                                {displayStands.map((displayStand) => {
-                                    return (<div key={displayStand.id} className="box-white">{displayStand.name}</div>)
-                                })}
-                            </div>
+                    <div className="col-1">
+                        <div className="align-middle">
+                            <button className="btn btn-primary" onClick={this.saveCampaign}>save</button>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="col-1">
+                        <div className="align-middle">
+                            <button className="btn btn-primary" onClick={this.deleteCampaign}>delete</button>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div className="row">
+                    <div className="col-9 box-white">
+                        <SceneView displayStands={displayStands} sendProductTransform={this.getProductTransform} />
+                    </div>
+                    <div className="col-3">
+                        <div className="box-white">
+                            <div className="box-white">
+                                <h6>Products</h6>
+                            </div>
+                            {displayStands.map((displayStand) => {
+                                return (
+                                    displayStand.products.map((product) => {
+                                        return (<div key={product.id} className="box-white">{product.name}</div>)
+                                }))
+                            })}
+                        </div>
+                        <div className="box-white">
+                            <div className="box-white">
+                                <h6>Display Stands</h6>
+                            </div>
+                            {displayStands.map((displayStand) => {
+                                return (<div key={displayStand.id} className="box-white">{displayStand.name}</div>)
+                            })}
+                        </div>
                     </div>
                 </div>
-            )
-        }
+                <div className="row">
+                </div>
+            </div>
+        )
     }
 }
 
