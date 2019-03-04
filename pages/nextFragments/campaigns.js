@@ -13,6 +13,8 @@ class Campaigns extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            CAMPAIGN_API_URL: props.campaignApiUrl,
+            OBJECT_URL: props.objectUrl,
             error: null,        // api server - get error
             isLoaded: false,    // api server - get flag
             campaigns: [],
@@ -28,7 +30,7 @@ class Campaigns extends Component {
     componentDidMount() {
         //=====================================================================
         // get all the campaign infomations from api server
-        const CAMPAIGN_LIST_API_URL = 'http://stolenbyte.kr:8080/api/v1/campaigns/';
+        const CAMPAIGN_LIST_API_URL = this.state.CAMPAIGN_API_URL;  //'http://stolenbyte.kr:8080/api/v1/campaigns/';
         fetch(CAMPAIGN_LIST_API_URL)
             .then(res => res.json())
             .then(
@@ -53,7 +55,7 @@ class Campaigns extends Component {
         // get the selected campaign infomation from api server
         let campaignId = this.props.campaignId;
         if(!isNaN(campaignId)) {
-            const CAMPAIGN_API_URL = 'http://stolenbyte.kr:8080/api/v1/campaigns/'+campaignId;
+            const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL+campaignId;    // 'http://stolenbyte.kr:8080/api/v1/campaigns/'+campaignId;
 
             fetch(CAMPAIGN_API_URL)
                 .then(res => res.json())
@@ -115,7 +117,7 @@ class Campaigns extends Component {
                 }
             ]
         };
-        const CAMPAIGN_API_URL = 'http://stolenbyte.kr:8080/api/v1/campaigns/';
+        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL;    // 'http://stolenbyte.kr:8080/api/v1/campaigns';
         fetch(CAMPAIGN_API_URL, {
             method: 'POST',
             headers: {
@@ -177,7 +179,14 @@ class Campaigns extends Component {
                             (isNaN(campaignId)) 
                             ? 'Please select a campaign from the list to the left'
                             : (campaignFound)
-                                ? <Campaign campaignId={campaign.id} title={campaign.title} displayStands={campaign.display_stands} /> 
+                                ?
+                                    <Campaign
+                                        campaignApiUrl={this.state.CAMPAIGN_API_URL}
+                                        objectUrl={this.state.OBJECT_URL}
+                                        campaignId={campaign.id}
+                                        title={campaign.title}
+                                        displayStands={campaign.display_stands}
+                                    /> 
                                 : <div>This campaign does not exist anymore</div>
                            
                         }

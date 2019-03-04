@@ -11,6 +11,9 @@ class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            // CAMPAIGN_API_URL: 'http://hyperion.clad-up.com/api/v1/campaigns',   //+campaignId,
+            CAMPAIGN_API_URL: 'http://stolenbyte.kr:8080/api/v1/campaigns/',   //+campaignId,
+            OBJECT_URL: 'http://objection.clad-up.com/',
             value: '',
         };
     }
@@ -28,7 +31,15 @@ class Index extends Component {
                     <Header nav={this.props.router.query.page} />
                     <div className="row flex-fill d-flex justify-content-start overflow-auto">
                         <div className="col-12">
-                            {(this.props.router.query.page == 'Campaigns') ? <Campaigns campaignId={this.props.router.query.campaignId} /> :''}
+                            {(this.props.router.query.page == 'Campaigns')
+                                ?
+                                    <Campaigns
+                                        campaignId={this.props.router.query.campaignId}
+                                        campaignApiUrl={this.state.CAMPAIGN_API_URL}
+                                        objectUrl={this.state.OBJECT_URL}
+                                    />
+                                : ''
+                            }
                             {(this.props.router.query.page == 'Products') ? <Products /> : ''}
                             {(this.props.router.query.page == undefined) ? '랜딩페이지!' : ''}
                         </div>

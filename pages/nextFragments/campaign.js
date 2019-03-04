@@ -6,6 +6,8 @@ class Campaign extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            CAMPAIGN_API_URL: props.campaignApiUrl,
+            OBJECT_URL: props.objectUrl,
             campaignId: null,
             displayStands: [],
             isLoaded: false,
@@ -34,8 +36,7 @@ class Campaign extends Component {
         console.log("send delete campaign " + this.state.campaignId + " request");
         
         let campaignId = this.props.campaignId;
-        const CAMPAIGN_API_URL = 'http://stolenbyte.kr:8080/api/v1/campaigns/'+campaignId;
-
+        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL+campaignId;
         fetch(CAMPAIGN_API_URL, {
             method: 'DELETE'
         })
