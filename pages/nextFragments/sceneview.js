@@ -33,9 +33,9 @@ class SceneView extends Component {
         let displayStands = this.props.displayStands;
         
         return (
-            <div className="height80" style={{ height: '100%', width: '100%' }}>
+            <div className="height80">
                 {appRendered &&
-                <Scene embedded vr-mode-ui="enabled: false;" shadow="type: pcf;">
+                <Scene embedded vr-mode-ui="enabled: false;" loading-screen="enabled: false;">
                     <a-assets timeout="3000">
                         {/*  Images */}
                         <img id="wallBack" src="/static/resources/img/SonyCenter_360panorama.jpg" />
@@ -104,7 +104,7 @@ class SceneView extends Component {
                                         let gltfModel = "#"+product.name;
                                         return (
                                             <Entity
-                                                init-product
+                                                //init-product
                                                 key={product.name}
                                                 id={product.id}
                                                 position={position3}

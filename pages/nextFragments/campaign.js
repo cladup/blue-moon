@@ -8,55 +8,75 @@ class Campaign extends Component {
         this.state = {
             CAMPAIGN_API_URL: props.campaignApiUrl,
             OBJECT_URL: props.objectUrl,
-            campaignId: props.campaignId,
-            displayStands: props.displayStands,
-            isCampaignDeleted: false
+            campaign: props.campaign
         };
 
         this.deleteCampaign = this.deleteCampaign.bind(this);
+        this.updateCampaign = this.updateCampaign.bind(this);
         this.getProductTransform = this.getProductTransform.bind(this);
     }
 
     getProductTransform(productId, newPosition) {
-        console.log("productId: " + productId);
-        console.log("newPosition: " + newPosition.x.toFixed(2) + " "  + newPosition.y.toFixed(2) + " " + newPosition.z.toFixed(2));
+        let ds_index, product_index;
+        let displayStands = this.state.campaign['display_stands'];
+        for(ds_index=0; ds_index<displayStands.length; ds_index++) {
+            let products = displayStands[ds_index]['products'];
+            for(product_index=0; product_index<products.length; product_index++) {
+                if(products[product_index]['id'] == productId) {
+                    products[product_index]['position_x'] = Number(Math.round(newPosition.x+'e2')+'e-2');
+                    products[product_index]['position_y'] = Number(Math.round(newPosition.y+'e2')+'e-2');
+                    products[product_index]['position_z'] = Number(Math.round(newPosition.z+'e2')+'e-2');
+                }
+            }
+        }
     }
 
     deleteCampaign() {
-        console.log("send delete campaign " + this.state.campaignId + " request");
-        
-        let campaignId = this.props.campaignId;
-        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL+campaignId;
+        let campaignId = this.state.campaign.id;
+        console.log("send delete campaign " + campaignId + " request");
+        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL + campaignId;
         fetch(CAMPAIGN_API_URL, {
             method: 'DELETE'
         })
         .then(data => {
-            console.log("campaign " + this.state.campaignId + " deleted.");
+            console.log("campaign " + campaignId + " deleted.");
             return redirect('', '/')
         })
     }
 
+    updateCampaign() {
+        let campaignId = this.state.campaign.id;
+        console.log("send update campaign " + campaignId + " request");
+        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL + campaignId;
+        fetch(CAMPAIGN_API_URL, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.state.campaign)
+        })
+        .then(data => {
+            console.log("campaign " + campaignId + " updated.");
+            // return redirect('', "/Campaigns/"+data.data.id);
+            return redirect('', "/Campaigns/"+campaignId);
+        })
+    }
+
     render() {
-        let displayStands = this.state.displayStands;
+        let displayStands = this.state.campaign.display_stands;
         return (
             <div>
-                <div className="row">
+                <div className="box-white row">
                     <div className="col-10">
-                        <h5 className="box-white">
-                            {this.props.title}
-                        </h5>
+                        <h5 className="align-middle">{this.state.campaign.title}</h5>
                     </div>
                     <div className="col-1">
-                        <div className="align-middle">
-                            <button className="btn btn-primary" onClick={this.saveCampaign}>save</button>
-                        </div>
+                        <button className="btn btn-primary" onClick={this.updateCampaign}>update</button>
                     </div>
                     <div className="col-1">
-                        <div className="align-middle">
-                            <button className="btn btn-primary" onClick={this.deleteCampaign}>delete</button>
-                        </div>
+                        <button className="btn btn-primary" onClick={this.deleteCampaign}>delete</button>
                     </div>
-                    
                 </div>
                 <div className="row">
                     <div className="col-9 box-white">

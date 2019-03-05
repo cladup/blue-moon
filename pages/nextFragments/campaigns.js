@@ -20,7 +20,6 @@ class Campaigns extends Component {
             campaigns: [],
             isCampaignLoaded: false,
             campaign: null,
-            isCampaignCreated: false,
             campaignFound: false
         };
         // This binding is necessary to make `this` work in the callback
@@ -30,7 +29,7 @@ class Campaigns extends Component {
     componentDidMount() {
         //=====================================================================
         // get all the campaign infomations from api server
-        const CAMPAIGN_LIST_API_URL = this.state.CAMPAIGN_API_URL;  //'http://stolenbyte.kr:8080/api/v1/campaigns/';
+        const CAMPAIGN_LIST_API_URL = this.state.CAMPAIGN_API_URL;
         fetch(CAMPAIGN_LIST_API_URL)
             .then(res => res.json())
             .then(
@@ -55,7 +54,7 @@ class Campaigns extends Component {
         // get the selected campaign infomation from api server
         let campaignId = this.props.campaignId;
         if(!isNaN(campaignId)) {
-            const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL+campaignId;    // 'http://stolenbyte.kr:8080/api/v1/campaigns/'+campaignId;
+            const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL+campaignId;
 
             fetch(CAMPAIGN_API_URL)
                 .then(res => res.json())
@@ -86,9 +85,7 @@ class Campaigns extends Component {
     }
 
     createNewCampaign() {
-
         console.log("send create new campaign request");
-
         let defaultCampaign = 
         {
             "company": "YC",
@@ -117,7 +114,7 @@ class Campaigns extends Component {
                 }
             ]
         };
-        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL;    // 'http://stolenbyte.kr:8080/api/v1/campaigns';
+        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL;
         fetch(CAMPAIGN_API_URL, {
             method: 'POST',
             headers: {
@@ -130,7 +127,6 @@ class Campaigns extends Component {
             return res.json();
         })  
         .then(data => {
-            console.log(data);
             if(data.result == "success")
             {
                 console.log("new campaign created");
@@ -158,14 +154,14 @@ class Campaigns extends Component {
                 <div className="row bg-light-gray height90">
                     <div className="col-2">
                         <div className="box-white">
-                        <div className="row">
-                            <div className="col-10">
-                                <h5>All Campaigns</h5>
+                            <div className="row">
+                                <div className="col-8">
+                                    <h5 className="align-middle">All Campaigns</h5>
+                                </div>
+                                <div className="col-4">
+                                    <button className="btn btn-primary" onClick={this.createNewCampaign}>+</button>
+                                </div>
                             </div>
-                            <div className="col-2">
-                                <button className="btn btn-primary" onClick={this.createNewCampaign}>+</button>
-                            </div>
-                        </div>
                         </div>
                         <div className="box-white">
                             {campaigns.map((campaign) => {
@@ -183,9 +179,7 @@ class Campaigns extends Component {
                                     <Campaign
                                         campaignApiUrl={this.state.CAMPAIGN_API_URL}
                                         objectUrl={this.state.OBJECT_URL}
-                                        campaignId={campaign.id}
-                                        title={campaign.title}
-                                        displayStands={campaign.display_stands}
+                                        campaign={campaign}
                                     /> 
                                 : <div>This campaign does not exist anymore</div>
                            
