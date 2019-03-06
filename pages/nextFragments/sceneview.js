@@ -19,13 +19,18 @@ class SceneView extends Component {
     }
 
     selectObject = (args) => {
-        args.target.setAttribute('wasd-controls', {enabled: 'true'});
+        args.target.parentElement.setAttribute('wasd-controls', {enabled: 'true'});
     }
     
     deselectObject = (args) => {
         let target = args.target;
-        target.setAttribute('wasd-controls', {enabled: 'false'});
-        this.props.sendProductTransform(target.getAttribute('id'), target.getAttribute('position'));
+        target.parentElement.setAttribute('wasd-controls', {enabled: 'false'});
+        this.props.sendProductTransform(target.parentElement.getAttribute('id'), target.parentElement.getAttribute('position'));
+        console.log(this.props.displayStands[0]['products'][0]);
+        console.log("target.getAttribute('position'): "
+                    + target.parentElement.getAttribute('position').x
+                    + ", " + target.parentElement.getAttribute('position').y
+                    + ", " + target.parentElement.getAttribute('position').z);
     }
 
     render() {
@@ -35,7 +40,7 @@ class SceneView extends Component {
         return (
             <div className="height80">
                 {appRendered &&
-                <Scene embedded vr-mode-ui="enabled: false;" loading-screen="enabled: false;">
+                <Scene embedded stats vr-mode-ui="enabled: false;">
                     <a-assets timeout="3000">
                         {/*  Images */}
                         <img id="wallBack" src="/static/resources/img/SonyCenter_360panorama.jpg" />
@@ -93,7 +98,7 @@ class SceneView extends Component {
                         <a-obj-model id="Env1-4" position="0.0 -0.30 -1.735" scale="1 1 1" src="#modern-building-window-obj" material="color: skyblue; repeat: 2 2;opacity: 0.4; transparent:true;" shadow="receive: true;" />
                     </Entity>
 
-                    <Entity id="products" className="3d-sample-section">
+                    <Entity id="products" className="product-section">
                         {
                             displayStands.map((displayStand) => {
                                 return (
@@ -104,19 +109,23 @@ class SceneView extends Component {
                                         let gltfModel = "#"+product.name;
                                         return (
                                             <Entity
-                                                //init-product
                                                 key={product.name}
                                                 id={product.id}
                                                 position={position3}
                                                 rotation={rotation3}
                                                 scale={scale3}
-                                                gltf-model={gltfModel}
-                                                class="clickable"
-                                                events={{
-                                                    mousedown: this.selectObject.bind(this),
-                                                    mouseup: this.deselectObject.bind(this)
-                                                }}
-                                            />
+                                            >
+                                                <Entity
+                                                    init-product
+                                                    key={product.name}
+                                                    gltf-model={gltfModel}
+                                                    class="clickable-products"
+                                                    events={{
+                                                        mousedown: this.selectObject.bind(this),
+                                                        mouseup: this.deselectObject.bind(this)
+                                                    }}
+                                                />
+                                            </Entity>
                                         )
                                     })
                                 )
@@ -124,7 +133,9 @@ class SceneView extends Component {
                         }
                     </Entity>
 
-                    <Entity primitive="a-camera"  id="player" position="0 2 0" rotation="0 180 0" wasd-controls="enabled: false" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;" raycaster="objects: .clickable;" cursor="rayOrigin: mouse; fuse: false" />
+                    <Entity primitive="a-camera"  id="player" position="0 2 0" rotation="0 180 0" wasd-controls="enabled: false" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;">
+                        <Entity id="cursor" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable-products;"/>
+                    </Entity>
                 </Scene>
                 }
             </div>
