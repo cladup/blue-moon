@@ -63,13 +63,20 @@ class Campaign extends Component {
         })
     }
 
+    editCampaign() {
+        console.log("edit button clicked");
+    }
+
     render() {
         let displayStands = this.state.campaign.display_stands;
         return (
             <div>
                 <div className="box-white row">
-                    <div className="col-10">
+                    <div className="col-9">
                         <h5 className="align-middle">{this.state.campaign.title}</h5>
+                    </div>
+                    <div className="col-1">
+                        <button className="btn btn-primary" onClick={this.editCampaign}>edit</button>
                     </div>
                     <div className="col-1">
                         <button className="btn btn-primary" onClick={this.updateCampaign}>update</button>
@@ -79,7 +86,7 @@ class Campaign extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-9 box-white">
+                    <div className="col-9">
                         <SceneView displayStands={displayStands} sendProductTransform={this.getProductTransform} />
                     </div>
                     <div className="col-3">

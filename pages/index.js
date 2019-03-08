@@ -11,9 +11,8 @@ class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // CAMPAIGN_API_URL: 'http://stolenbyte.kr:8080/api/v1/campaigns/',
             CAMPAIGN_API_URL: 'http://hyperion.clad-up.com/api/v1/campaigns/',
-            OBJECT_URL: 'http://objection.clad-up.com/',
+            OBJECT_API_URL: 'http://objection.clad-up.com/api/v1/objects/',
             value: '',
         };
     }

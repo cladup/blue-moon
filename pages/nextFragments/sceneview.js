@@ -1,5 +1,5 @@
-import {Entity, Scene} from 'aframe-react';
 import React, {Component} from 'react'
+import {Entity, Scene} from 'aframe-react';
 
 class SceneView extends Component {
     constructor(props) {
@@ -13,34 +13,56 @@ class SceneView extends Component {
         if (typeof window !== 'undefined') {
             require('aframe');
             require('aframe-environment-component');
-            require('./init-product.js');
+            require('aframe-orbit-controls');
+            require('../aframeComponents/init-product.js');
+            require('../aframeComponents/disable-inspector.js');
             this.setState({ appRendered: true })
         }
     }
 
+    clickObject = (args) => {
+        let target = args.target.parentElement;
+
+        if(target.getAttribute('isSelected') == 'false') {
+            target.setAttribute('wasd-controls', {enabled: 'true'});
+            target.setAttribute('isSelected', true);
+        } else {
+            target.setAttribute('wasd-controls', {enabled: 'false'});
+            target.setAttribute('isSelected', false);
+            this.props.sendProductTransform(target.getAttribute('id'), target.getAttribute('position'));
+            console.log("target.getAttribute('position'): "
+                        + target.getAttribute('position').x
+                        + ", " + target.getAttribute('position').y
+                        + ", " + target.getAttribute('position').z);
+        }
+    }
+    
     selectObject = (args) => {
-        args.target.parentElement.setAttribute('wasd-controls', {enabled: 'true'});
+        let target = args.target.parentElement;
+        console.log(target.getAttribute('name') + " selected.");
+
+        document.getElementById('mainCamera').setAttribute('look-controls', {enabled: false});
+        target.setAttribute('wasd-controls', {enabled: 'true'});
     }
     
     deselectObject = (args) => {
-        let target = args.target;
-        target.parentElement.setAttribute('wasd-controls', {enabled: 'false'});
-        this.props.sendProductTransform(target.parentElement.getAttribute('id'), target.parentElement.getAttribute('position'));
-        console.log(this.props.displayStands[0]['products'][0]);
-        console.log("target.getAttribute('position'): "
-                    + target.parentElement.getAttribute('position').x
-                    + ", " + target.parentElement.getAttribute('position').y
-                    + ", " + target.parentElement.getAttribute('position').z);
+        let target = args.target.parentElement;
+        console.log(target.getAttribute('name') + " deselected.");
+        
+        document.getElementById('mainCamera').setAttribute('look-controls', {enabled: true});
+        target.setAttribute('wasd-controls', {enabled: 'false'});
+        this.props.sendProductTransform(target.getAttribute('id'), target.getAttribute('position'));
     }
 
     render() {
         const appRendered = this.state.appRendered;
         let displayStands = this.props.displayStands;
-        
+    
         return (
-            <div className="height80">
+            <div className="height80" style={{ height: '100%', width: '100%' }}>
                 {appRendered &&
-                <Scene embedded stats vr-mode-ui="enabled: false;">
+                //<Scene embedded vr-mode-ui="enabled: false;" disable-inspector>
+                <Scene embedded vr-mode-ui="enabled: false;">
                     <a-assets timeout="3000">
                         {/*  Images */}
                         <img id="wallBack" src="/static/resources/img/SonyCenter_360panorama.jpg" />
@@ -109,20 +131,23 @@ class SceneView extends Component {
                                         let gltfModel = "#"+product.name;
                                         return (
                                             <Entity
-                                                key={product.name}
+                                                key={product.id}
                                                 id={product.id}
+                                                name={product.name}
                                                 position={position3}
                                                 rotation={rotation3}
                                                 scale={scale3}
+                                                isSelected={false}
                                             >
                                                 <Entity
                                                     init-product
-                                                    key={product.name}
+                                                    key={product.id}
                                                     gltf-model={gltfModel}
                                                     class="clickable-products"
                                                     events={{
                                                         mousedown: this.selectObject.bind(this),
-                                                        mouseup: this.deselectObject.bind(this)
+                                                        mouseup: this.deselectObject.bind(this),
+                                                        //click: this.clickObject.bind(this),
                                                     }}
                                                 />
                                             </Entity>
@@ -133,7 +158,8 @@ class SceneView extends Component {
                         }
                     </Entity>
 
-                    <Entity primitive="a-camera"  id="player" position="0 2 0" rotation="0 180 0" wasd-controls="enabled: false" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;">
+                    {/* <Entity primitive="a-camera" id="mainCamera" position="0 2 0" rotation="0 180 0" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;"> */}
+                    <Entity primitive="a-camera" id="mainCamera" look-controls orbit-controls="target: 0 0 0; minDistance: 0.5; maxDistance: 20; initialPosition: 0 5 5">
                         <Entity id="cursor" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable-products;"/>
                     </Entity>
                 </Scene>
