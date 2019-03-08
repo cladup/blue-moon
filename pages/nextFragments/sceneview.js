@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Entity, Scene} from 'aframe-react';
 
 class SceneView extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -30,39 +31,50 @@ class SceneView extends Component {
             target.setAttribute('wasd-controls', {enabled: 'false'});
             target.setAttribute('isSelected', false);
             this.props.sendProductTransform(target.getAttribute('id'), target.getAttribute('position'));
-            console.log("target.getAttribute('position'): "
-                        + target.getAttribute('position').x
-                        + ", " + target.getAttribute('position').y
-                        + ", " + target.getAttribute('position').z);
         }
     }
     
     selectObject = (args) => {
         let target = args.target.parentElement;
+        let mainCamera = document.getElementById('mainCamera');
+        
         console.log(target.getAttribute('name') + " selected.");
 
-        document.getElementById('mainCamera').setAttribute('orbit-controls', {enabled: false});
+        mainCamera.setAttribute('orbit-controls', {enabled: false});
         target.setAttribute('wasd-controls', {enabled: 'true'});
+        this.props.selectedProduct(target.getAttribute('id'));
     }
     
     deselectObject = (args) => {
         let target = args.target.parentElement;
+        let mainCamera = document.getElementById('mainCamera');
+
         console.log(target.getAttribute('name') + " deselected.");
         
-        document.getElementById('mainCamera').setAttribute('orbit-controls', {enabled: true});
+        mainCamera.setAttribute('orbit-controls', {enabled: true});
         target.setAttribute('wasd-controls', {enabled: 'false'});
+        this.props.selectedProduct(target.getAttribute('id'));
+
+        console.log("new position: "
+                    +   Number(Math.round(target.getAttribute('position').x+'e2')+'e-2')
+                    + ", " + Number(Math.round(target.getAttribute('position').y+'e2')+'e-2')
+                    + ", " + Number(Math.round(target.getAttribute('position').z+'e2')+'e-2'));
         this.props.sendProductTransform(target.getAttribute('id'), target.getAttribute('position'));
     }
 
     render() {
         const appRendered = this.state.appRendered;
-        let displayStands = this.props.displayStands;
+        let displayStands = this.props.campaign.display_stands;
     
         return (
-            <div className="height80" style={{ height: '100%', width: '100%' }}>
+            <div className="height80">
                 {appRendered &&
-                //<Scene embedded vr-mode-ui="enabled: false;" disable-inspector>
-                <Scene embedded vr-mode-ui="enabled: false;">
+                <Scene
+                    embedded
+                    stats
+                    vr-mode-ui="enabled: false;"
+                    disable-inspector
+                >
                     <a-assets timeout="3000">
                         {/*  Images */}
                         <img id="wallBack" src="/static/resources/img/SonyCenter_360panorama.jpg" />
@@ -88,7 +100,7 @@ class SceneView extends Component {
                     </a-assets>
                     <Entity id="environment">
                         <Entity id="ambientLight" light="type: ambient; intensity: 1; castShadow: false;" position="0 1 0" />
-                        <Entity id="spotLight" light="type: point; intensity: 2; castShadow: true; distance: 10" position="0 3 0" />
+                        <Entity id="spotLight" light="type: point; intensity: 3; castShadow: true; distance: 12" position="0 3 0" />
 
                         <Entity environment="   preset: forest; 
                                                 shadow: false; 
@@ -143,6 +155,7 @@ class SceneView extends Component {
                                                     init-product
                                                     key={product.id}
                                                     gltf-model={gltfModel}
+                                                    shadow="receive: true; cast: true" 
                                                     class="clickable-products"
                                                     events={{
                                                         mousedown: this.selectObject.bind(this),
@@ -159,7 +172,7 @@ class SceneView extends Component {
                     </Entity>
 
                     {/* <Entity primitive="a-camera" id="mainCamera" position="0 2 0" rotation="0 180 0" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;"> */}
-                    <Entity primitive="a-camera" id="mainCamera" look-controls orbit-controls="enableKeys:false; minDistance: 0.5; maxDistance: 20; initialPosition: 0 5 5">
+                    <Entity primitive="a-camera" id="mainCamera" look-controls orbit-controls="enableKeys: false; minDistance: 0.5; maxDistance: 20; initialPosition: 0 5 5">
                         <Entity id="cursor" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable-products;"/>
                     </Entity>
                 </Scene>

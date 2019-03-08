@@ -8,12 +8,27 @@ class Campaign extends Component {
         this.state = {
             CAMPAIGN_API_URL: props.campaignApiUrl,
             OBJECT_URL: props.objectUrl,
-            campaign: props.campaign
+            campaign: props.campaign,
+            selectedProductId: null
         };
 
         this.deleteCampaign = this.deleteCampaign.bind(this);
         this.updateCampaign = this.updateCampaign.bind(this);
         this.getProductTransform = this.getProductTransform.bind(this);
+        this.highlightSelectedProduct = this.highlightSelectedProduct.bind(this);
+    }
+
+    highlightSelectedProduct(productId) {
+        if(productId == null) return;
+        let selectedProduct = document.getElementById('product'+productId);
+        console.log(selectedProduct.getAttribute("selected"));
+        if(selectedProduct.getAttribute("selected") == "false" || selectedProduct.getAttribute("selected") == null) {
+            selectedProduct.setAttribute("selected", "true");
+            selectedProduct.classList.add("bg-primary");
+        } else {
+            selectedProduct.setAttribute("selected", "false");
+            selectedProduct.classList.remove("bg-primary");
+        }
     }
 
     getProductTransform(productId, newPosition) {
@@ -68,7 +83,8 @@ class Campaign extends Component {
     }
 
     render() {
-        let displayStands = this.state.campaign.display_stands;
+        let campaign = this.state.campaign;
+        let displayStands = campaign.display_stands;
         return (
             <div>
                 <div className="box-white row">
@@ -87,7 +103,11 @@ class Campaign extends Component {
                 </div>
                 <div className="row">
                     <div className="col-9">
-                        <SceneView displayStands={displayStands} sendProductTransform={this.getProductTransform} />
+                        <SceneView
+                            campaign={campaign}
+                            sendProductTransform={this.getProductTransform}
+                            selectedProduct={this.highlightSelectedProduct}
+                        />
                     </div>
                     <div className="col-3">
                         <div className="box-white">
@@ -97,7 +117,7 @@ class Campaign extends Component {
                             {displayStands.map((displayStand) => {
                                 return (
                                     displayStand.products.map((product) => {
-                                        return (<div key={product.id} className="box-white">{product.name}</div>)
+                                        return (<div id={'product'+product.id} key={product.id} className="box-white">{product.name}</div>)
                                 }))
                             })}
                         </div>
