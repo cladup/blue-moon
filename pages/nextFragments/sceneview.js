@@ -41,7 +41,7 @@ class SceneView extends Component {
         let target = args.target.parentElement;
         console.log(target.getAttribute('name') + " selected.");
 
-        document.getElementById('mainCamera').setAttribute('look-controls', {enabled: false});
+        document.getElementById('mainCamera').setAttribute('orbit-controls', {enabled: false});
         target.setAttribute('wasd-controls', {enabled: 'true'});
     }
     
@@ -49,7 +49,7 @@ class SceneView extends Component {
         let target = args.target.parentElement;
         console.log(target.getAttribute('name') + " deselected.");
         
-        document.getElementById('mainCamera').setAttribute('look-controls', {enabled: true});
+        document.getElementById('mainCamera').setAttribute('orbit-controls', {enabled: true});
         target.setAttribute('wasd-controls', {enabled: 'false'});
         this.props.sendProductTransform(target.getAttribute('id'), target.getAttribute('position'));
     }
@@ -159,7 +159,7 @@ class SceneView extends Component {
                     </Entity>
 
                     {/* <Entity primitive="a-camera" id="mainCamera" position="0 2 0" rotation="0 180 0" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;"> */}
-                    <Entity primitive="a-camera" id="mainCamera" look-controls orbit-controls="target: 0 0 0; minDistance: 0.5; maxDistance: 20; initialPosition: 0 5 5">
+                    <Entity primitive="a-camera" id="mainCamera" look-controls orbit-controls="enableKeys:false; minDistance: 0.5; maxDistance: 20; initialPosition: 0 5 5">
                         <Entity id="cursor" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable-products;"/>
                     </Entity>
                 </Scene>
