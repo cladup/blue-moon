@@ -17,7 +17,7 @@ function colorParse(str) {
 AFRAME.registerComponent('a-ada-ocean', {
 
 	schema: {
-		src: { type: 'src' },
+		asset: { type: 'asset' },
 		width: { default: 10000 },
 		height: { default: 10000 },
 		distortionScale: { default: 4 },
@@ -134,7 +134,7 @@ AFRAME.registerPrimitive('a-ada-ocean', {
 		color: 'a-ada-ocean.color',
 		opacity: 'a-ada-ocean.opacity',
 		oceanlight: 'a-ada-ocean.oceanLight',
-		src: 'a-ada-ocean.src',
+		asset: 'a-ada-ocean.asset',
 		'src-height': 'a-ada-ocean.srcWidth',
 		'src-width': 'a-ada-ocean.srcHeight'
 	}

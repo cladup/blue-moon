@@ -74,22 +74,10 @@ class SceneView extends Component {
                 <Entity id="ambientLight" light="type: ambient; intensity: 1; castShadow: false;" position="0 1 0" />
                 <Entity id="spotLight" light="type: point; intensity: 3; castShadow: true; distance: 12" position="0 3 0" />
 
-                <Entity environment="   preset: forest; 
-                                        shadow: false; 
-                                        skyType: atmosphere; 
-                                        playArea: 1; 
-                                        grid: cross; 
-                                        fog: 0; 
-                                        ground: flat; 
-                                        groundColor: #304529;
-                                        groundColor2: #374f2f;
-                                        groundTexture: checkerboard;
-                                        dressingAmount: 100" 
-                        position="0 -2 0"
-                />
-                <a-obj-model id="Env1" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-iron-wall-obj" material="src: #iron-wall; repeat: 3 3; transparent:true;" shadow="receive: true;" />
-                <a-obj-model id="Env2" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-water-circle-obj" material="src: #wood; repeat: 10 10;" shadow="receive: true;" />
-                <a-obj-model id="Env3" position="0.0 -0.30 -1.735" scale="1 1 1" src="#modern-building-window-obj" material="color: skyblue; repeat: 2 2;opacity: 0.4; transparent:true;" shadow="receive: true;" />
+                <Entity environment="preset: forest; shadow: false; skyType: atmosphere; playArea: 1; grid: cross; fog: 0; ground: flat; groundColor: #304529; groundColor2: #374f2f; groundTexture: checkerboard; dressingAmount: 100" position="0 -2 0" />
+                <Entity id="Env1" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-iron-wall-obj" material="src: #iron-wall; repeat: 3 3; transparent:true;" shadow="receive: true;" />
+                <Entity id="Env2" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-water-circle-obj" material="src: #wood; repeat: 10 10;" shadow="receive: true;" />
+                <Entity id="Env3" position="0.0 -0.30 -1.735" scale="1 1 1" src="#modern-building-window-obj" material="color: skyblue; repeat: 2 2;opacity: 0.4; transparent:true;" shadow="receive: true;" />
             </>
         )
     }
@@ -103,7 +91,6 @@ class SceneView extends Component {
                 <Entity id="lighttest1" light="type: directional; intensity: 1; castShadow: true;" position="0 1 0" />
 
                 <Entity primitive='a-sky' src="#sky" position="0 -1 0" rotation="0 180 0" material="transparent: true" />
-    
                 <Entity primitive='a-ada-ocean' src="#water-normal" position="0 0 0" opacity="0.95" width="10000" height="10000" oceanlight="#lighttest1" />
 
                 <Entity primitive='a-box' position="0 0 -2.5" scale="1 2 1" />
