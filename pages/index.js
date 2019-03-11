@@ -17,6 +17,7 @@ class Index extends Component {
         };
     }
 
+
     render() {
         // console.log(this.props.router.query);
         return (

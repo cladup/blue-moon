@@ -17,6 +17,11 @@ class SceneView extends Component {
             require('aframe-orbit-controls');
             require('../aframeComponents/init-product.js');
             require('../aframeComponents/disable-inspector.js');
+
+            require('../threejsComponents/Sky.js');
+            require('../threejsComponents/Water.js');
+            require('../aframeComponents/a-ada-ocean.js');
+
             this.setState({ appRendered: true })
         }
     }
@@ -39,10 +44,12 @@ class SceneView extends Component {
         let mainCamera = document.getElementById('mainCamera');
         
         console.log(target.getAttribute('name') + " selected.");
-
-        mainCamera.setAttribute('orbit-controls', {enabled: false});
-        target.setAttribute('wasd-controls', {enabled: 'true'});
         this.props.selectedProduct(target.getAttribute('id'));
+
+        mainCamera.setAttribute('orbit-controls', {target: target.getAttribute('position'), enablePan: false, enableRotate: false, enableZoom: false});
+        console.log(mainCamera.getAttribute('orbit-controls').target);
+
+        // target.setAttribute('wasd-controls', {enabled: 'true'});
     }
     
     deselectObject = (args) => {
@@ -50,10 +57,12 @@ class SceneView extends Component {
         let mainCamera = document.getElementById('mainCamera');
 
         console.log(target.getAttribute('name') + " deselected.");
-        
-        mainCamera.setAttribute('orbit-controls', {enabled: true});
-        target.setAttribute('wasd-controls', {enabled: 'false'});
         this.props.selectedProduct(target.getAttribute('id'));
+        
+        mainCamera.setAttribute('orbit-controls', {target: target.getAttribute('position'), enablePan: true, enableRotate: true, enableZoom: true});
+        console.log(mainCamera.getAttribute('orbit-controls').target);
+
+        // target.setAttribute('wasd-controls', {enabled: 'false'});
 
         console.log("new position: "
                     +   Number(Math.round(target.getAttribute('position').x+'e2')+'e-2')
@@ -62,28 +71,80 @@ class SceneView extends Component {
         this.props.sendProductTransform(target.getAttribute('id'), target.getAttribute('position'));
     }
 
+    // this has to be added to campaign architecture
+    demoCampaignEnvironment() {
+        return (
+            <>
+                <Entity id="ambientLight" light="type: ambient; intensity: 1; castShadow: false;" position="0 1 0" />
+                <Entity id="spotLight" light="type: point; intensity: 3; castShadow: true; distance: 12" position="0 3 0" />
+
+                <Entity environment="   preset: forest; 
+                                        shadow: false; 
+                                        skyType: atmosphere; 
+                                        playArea: 1; 
+                                        grid: cross; 
+                                        fog: 0; 
+                                        ground: flat; 
+                                        groundColor: #304529;
+                                        groundColor2: #374f2f;
+                                        groundTexture: checkerboard;
+                                        dressingAmount: 100" 
+                        position="0 -2 0"
+                />
+                <a-obj-model id="Env1" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-iron-wall-obj" material="src: #iron-wall; repeat: 3 3; transparent:true;" shadow="receive: true;" />
+                <a-obj-model id="Env2" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-water-circle-obj" material="src: #wood; repeat: 10 10;" shadow="receive: true;" />
+                <a-obj-model id="Env3" position="0.0 -0.30 -1.735" scale="1 1 1" src="#modern-building-window-obj" material="color: skyblue; repeat: 2 2;opacity: 0.4; transparent:true;" shadow="receive: true;" />
+            </>
+        )
+    }
+
+    // this has to be added to campaign architecture
+    orriCampaignEnvironment() {
+        return (
+            <>
+                <Entity light="type: spot; castShadow:false; angle: 70; color: #FFF; distance: 20; intensity: 2.0; penumbra: 0.5;" position="0 10 -2.5" rotation="-90 0 0" />
+                <Entity light="type: ambient; intensity: 0.7; castShadow: false;" position="0 1 0" />
+                <Entity id="lighttest1" light="type: directional; intensity: 1; castShadow: true;" position="0 1 0" />
+
+                <Entity primitive='a-sky' src="#sky" position="0 -1 0" rotation="0 180 0" material="transparent: true" />
+    
+                <Entity primitive='a-ada-ocean' src="#water-normal" position="0 0 0" opacity="0.95" width="10000" height="10000" oceanlight="#lighttest1" />
+
+                <Entity primitive='a-box' position="0 0 -2.5" scale="1 2 1" />
+                <Entity primitive='a-box' position="2 0 -2.5" scale="1 2 1" />
+                <Entity primitive='a-box' position="-2 0 -2.5" scale="1 2 1" />
+
+                <Entity id="Env1" position="0.4 31 -0.5" scale="150 150 150" gltf-model="#modern-building-gltf" shadow="receive: true; cast: true" />
+            </>
+        )
+    }
+
     render() {
         const appRendered = this.state.appRendered;
-        let displayStands = this.props.campaign.display_stands;
+
+        let campaign = this.props.campaign;
+        let displayStands = campaign.display_stands;
+
+        if(appRendered) console.log(this.props.campaign);
     
         return (
             <div className="height80">
                 {appRendered &&
                 <Scene
                     embedded
-                    stats
                     vr-mode-ui="enabled: false;"
-                    disable-inspector
+                    //stats
+                    //disable-inspector
                 >
-                    <a-assets timeout="3000">
+                    <a-assets
+                        //timeout="3000"    // default value: 3000
+                    >
                         {/*  Images */}
-                        <img id="wallBack" src="/static/resources/img/SonyCenter_360panorama.jpg" />
-                        <img id="bag-sample-picture" src="/static/resources/img/bag-sample-01.jpg" />
-                        <img id="panel-background" src="/static/resources/img/background.png" />
-                        <img id="cancel-img" src="/static/resources/img/cancel.png" />
                         <img id="iron-wall" src="/static/resources/environments/Enviroment/tiled_circle/iron_wall/iron_wall.png" />
                         <img id="wood" src="/static/resources/environments/Enviroment/tiled_circle/water_circle_wood/wood_floor.png" />
-
+                        <img id="water-normal" src="/static/resources/img/waternormals.jpg" />
+                        <img id="sky" src="/static/resources/environments/Enviroment/vp_sky_v3_015_2 (3).jpg" crossOrigin="anonymous" />
+                        
                         {/*  Environment */}
                         <a-asset-item id="demoTable" src="/static/resources/environments/Enviroment/enviroment_non_glass.glb" />
                         <a-asset-item id="modern-building-gltf" src="/static/resources/environments/Enviroment/enviroment_non_glass.glb" />
@@ -97,41 +158,35 @@ class SceneView extends Component {
                         <a-asset-item id="demoBag" src="/static/resources/scanned/handbag2p2k.glb" />
                         <a-asset-item id="demoShoe" src="/static/resources/scanned/vans_blue_shoe.glb" />
 
+                        <a-asset-item id="orri-handbag" src="/static/resources/models/orri/handbag/handbag2p2k.glb" />
+                        <a-asset-item id="orri-handbag1" src="/static/resources/models/orri/handbag/handbag5p1k.glb" />
+                        <a-asset-item id="orri-handbag2" src="/static/resources/models/orri/handbag/test.glb" />
+                        <a-asset-item id="orri-handbag-01" src="/static/resources/models/orri/handbag/orri-handbag-wm-01.glb" />
                     </a-assets>
-                    <Entity id="environment">
-                        <Entity id="ambientLight" light="type: ambient; intensity: 1; castShadow: false;" position="0 1 0" />
-                        <Entity id="spotLight" light="type: point; intensity: 3; castShadow: true; distance: 12" position="0 3 0" />
-
-                        <Entity environment="   preset: forest; 
-                                                shadow: false; 
-                                                skyType: atmosphere; 
-                                                playArea: 1; 
-                                                grid: cross; 
-                                                fog: 0; 
-                                                ground: flat; 
-                                                groundColor: #304529;
-                                                groundColor2: #374f2f;
-                                                groundTexture: checkerboard;
-                                                dressingAmount: 100" 
-                                position="0 -2 0"
-                        />
-
+                    <Entity id="environments">
+                        {(campaign.title == "Demo Campaign") ? this.demoCampaignEnvironment() : ''}
+                        {(campaign.title == "New Campaign") ? this.demoCampaignEnvironment() : ''}
+                        {(campaign.title == "ORRi Campaign") ? this.orriCampaignEnvironment() : ''}
+                    </Entity>
+                    <Entity id="display_stands">
                         {
                             displayStands.map((displayStand) => {
                                 let position3 = displayStand.position_x + " " + displayStand.position_y + " " + displayStand.position_z;
                                 let rotation3 = displayStand.rotation_x + " " + displayStand.rotation_y + " " + displayStand.rotation_z;
                                 let scale3 = displayStand.scale + " " + displayStand.scale + " " + displayStand.scale;
                                 let modelId = "#"+displayStand.name;
-                                return (
-                                    <Entity id={displayStand.name} key={displayStand.name} position={position3} rotation={rotation3} scale={scale3} gltf-model={modelId} shadow="receive: true;" /    >
-                                )
+                                if(displayStand.name == "a-box") {
+                                    return (
+                                        <Entity primitive='a-box' id={displayStand.id} key={displayStand.id} position={position3} rotation={rotation3} scale={scale3} shadow="receive: true; cast: true" />
+                                    )
+                                } else {
+                                    return (
+                                        <Entity id={displayStand.name} key={displayStand.name} position={position3} rotation={rotation3} scale={scale3} gltf-model={modelId} shadow="receive: true; cast: true" />
+                                    )
+                                }
                             })
                         }
-                        <a-obj-model id="Env1-2" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-iron-wall-obj" material="src: #iron-wall; repeat: 3 3; transparent:true;" shadow="receive: true;" />
-                        <a-obj-model id="Env1-3" position="0.1 -0.78 -0.5" scale="1 1 1" src="#modern-building-water-circle-obj" material="src: #wood; repeat: 10 10;" shadow="receive: true;" />
-                        <a-obj-model id="Env1-4" position="0.0 -0.30 -1.735" scale="1 1 1" src="#modern-building-window-obj" material="color: skyblue; repeat: 2 2;opacity: 0.4; transparent:true;" shadow="receive: true;" />
                     </Entity>
-
                     <Entity id="products" className="product-section">
                         {
                             displayStands.map((displayStand) => {
@@ -158,6 +213,8 @@ class SceneView extends Component {
                                                     shadow="receive: true; cast: true" 
                                                     class="clickable-products"
                                                     events={{
+                                                        //mouseenter: this.selectObject.bind(this),
+                                                        //mouseleave: this.deselectObject.bind(this),
                                                         mousedown: this.selectObject.bind(this),
                                                         mouseup: this.deselectObject.bind(this),
                                                         //click: this.clickObject.bind(this),
@@ -172,7 +229,16 @@ class SceneView extends Component {
                     </Entity>
 
                     {/* <Entity primitive="a-camera" id="mainCamera" position="0 2 0" rotation="0 180 0" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;"> */}
-                    <Entity primitive="a-camera" id="mainCamera" look-controls orbit-controls="enableKeys: false; minDistance: 0.5; maxDistance: 20; initialPosition: 0 5 5">
+                    <Entity
+                        primitive="a-camera"
+                        id="mainCamera"
+                        look-controls
+                        orbit-controls="
+                            minDistance: 0.5;
+                            maxDistance: 50;
+                            initialPosition: 0 2 5;
+                        "
+                    >
                         <Entity id="cursor" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable-products;"/>
                     </Entity>
                 </Scene>

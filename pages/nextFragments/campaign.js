@@ -78,8 +78,9 @@ class Campaign extends Component {
         })
     }
 
-    editCampaign() {
-        console.log("edit button clicked");
+    // reset camera transform to campaign parameters 
+    previewCampaign() {
+        console.log("preview button clicked");
     }
 
     render() {
@@ -92,7 +93,7 @@ class Campaign extends Component {
                         <h5 className="align-middle">{this.state.campaign.title}</h5>
                     </div>
                     <div className="col-1">
-                        <button className="btn btn-primary" onClick={this.editCampaign}>edit</button>
+                        <button className="btn btn-primary" onClick={this.previewCampaign}>preview</button>
                     </div>
                     <div className="col-1">
                         <button className="btn btn-primary" onClick={this.updateCampaign}>update</button>
