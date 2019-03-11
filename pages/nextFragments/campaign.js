@@ -21,7 +21,6 @@ class Campaign extends Component {
     highlightSelectedProduct(productId) {
         if(productId == null) return;
         let selectedProduct = document.getElementById('product'+productId);
-        console.log(selectedProduct.getAttribute("selected"));
         if(selectedProduct.getAttribute("selected") == "false" || selectedProduct.getAttribute("selected") == null) {
             selectedProduct.setAttribute("selected", "true");
             selectedProduct.classList.add("bg-primary");
