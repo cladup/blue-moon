@@ -17,7 +17,7 @@ function colorParse(str) {
 AFRAME.registerComponent('a-ada-ocean', {
 
 	schema: {
-		asset: { type: 'asset' },
+		src: { type: 'asset' },
 		width: { default: 10000 },
 		height: { default: 10000 },
 		distortionScale: { default: 4 },

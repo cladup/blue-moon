@@ -57,14 +57,12 @@ class SceneView extends Component {
 
     lockOrbitControls = (args) => {
         let mainCamera = document.getElementById('mainCamera');
-        mainCamera.setAttribute('orbit-controls', {enablePan: false, enableRotate: false, enableZoom: false});
-        console.log("mainCamera.getAttribute('orbit-controls'): ");
-        console.log(mainCamera.getAttribute('orbit-controls'));
+        mainCamera.setAttribute('orbit-controls', {enableRotate: false, enableZoom: false});
     }
 
     unlockOrbitControls = (args) => {
         let mainCamera = document.getElementById('mainCamera');
-        mainCamera.setAttribute('orbit-controls', {enablePan: true, enableRotate: true, enableZoom: true});
+        mainCamera.setAttribute('orbit-controls', {enableRotate: true, enableZoom: true});
     }
 
     // this has to be added to campaign architecture
@@ -91,7 +89,8 @@ class SceneView extends Component {
                 <Entity id="lighttest1" light="type: directional; intensity: 1; castShadow: true;" position="0 1 0" />
 
                 <Entity primitive='a-sky' src="#sky" position="0 -1 0" rotation="0 180 0" material="transparent: true" />
-                <Entity primitive='a-ada-ocean' src="#water-normal" position="0 0 0" opacity="0.95" width="10000" height="10000" oceanlight="#lighttest1" />
+                {/* <Entity primitive='a-ada-ocean' src="#water-normal" position="0 0 0" opacity="0.95" width="10000" height="10000" oceanlight="#lighttest1" /> */}
+                <Entity primitive='a-ada-ocean' position="0 0 0" opacity="0.95" width="10000" height="10000" oceanlight="#lighttest1" />
 
                 <Entity primitive='a-box' position="0 0 -2.5" scale="1 2 1" />
                 <Entity primitive='a-box' position="2 0 -2.5" scale="1 2 1" />
@@ -114,7 +113,7 @@ class SceneView extends Component {
                 <Scene
                     embedded
                     vr-mode-ui="enabled: false;"
-                    //stats
+                    stats
                     disable-inspector
                 >
                     <a-assets
