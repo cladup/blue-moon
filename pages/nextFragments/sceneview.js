@@ -133,7 +133,7 @@ class SceneView extends Component {
                 <Scene
                     embedded
                     vr-mode-ui="enabled: false;"
-                    //stats
+                    stats
                     //disable-inspector
                 >
                     <a-assets
@@ -236,7 +236,7 @@ class SceneView extends Component {
                         orbit-controls="
                             minDistance: 0.5;
                             maxDistance: 50;
-                            initialPosition: 0 2 5;
+                            initialPosition: 0 3 5;
                         "
                     >
                         <Entity id="cursor" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable-products;"/>
