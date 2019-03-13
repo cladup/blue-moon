@@ -156,120 +156,77 @@ class SceneView extends Component {
                                 let scale3 = displayStand.scale + " " + displayStand.scale + " " + displayStand.scale;
                                 let modelId = "#"+displayStand.name;
                                 let dp_key = displayStand.id + displayStand.name;
+                                let model = '';
+                                if(displayStand.name == "a-box") {
+                                    model = `primitive='a-box'`;
+                                } else {
+                                    model = `gltf-model=${modelId}`;
+                                }
+
                                 return (
-                                    (displayStand.name == "a-box")
-                                    ?
+                                    <Entity
+                                        id={displayStand.id}
+                                        key={dp_key}
+                                        position={dp_position3}
+                                        type={displayStand.type}
+                                        isSelected={false}
+                                    >
                                         <Entity
-                                            id={displayStand.id}
-                                            key={dp_key}
-                                            position={dp_position3}
-                                            type={displayStand.type}
-                                            isSelected={false}
-                                        >
-                                            <Entity
-                                                primitive='a-box'
-                                                scale={scale3}
-                                                shadow="receive: true; cast: true"
-                                                class="clickable-products"
-                                                events={{
-                                                    //mouseleave: this.unlockOrbitControls.bind(this),
-                                                    mousedown: this.lockOrbitControls.bind(this),
-                                                    mouseup: this.unlockOrbitControls.bind(this),
-                                                    click: this.clickObject.bind(this),
-                                                }}
-                                            />
-                                            <Entity id="products" className="product-section">
-                                            {
-                                                displayStand.products.map((product) => {
-                                                    let product_position3 = (product.position_x - displayStand.position_x) + " "
-                                                                            + (product.position_y - displayStand.position_y ) + " "
-                                                                            + (product.position_z - displayStand.position_z );
-                                                    let rotation3 = product.rotation_x + " " + product.rotation_y + " " + product.rotation_z;
-                                                    let scale3 = product.scale + " " + product.scale + " " + product.scale;
-                                                    let gltfModel = "#"+product.name;
-                                                    let product_key = product.id + product.name;
+                                            {...((displayStand.name.startsWith("a-")) ? {primitive: displayStand.name} : '' )}
+                                            gltf-model={modelId}
+                                            scale={scale3}
+                                            rotation={rotation3}
+                                            shadow="receive: true; cast: true"
+                                            class="clickable-products"
+                                            events={{
+                                                mousedown: this.lockOrbitControls.bind(this),
+                                                mouseup: this.unlockOrbitControls.bind(this),
+                                                click: this.clickObject.bind(this),
+                                            }}
+                                        />
+                                        <Entity id="products" className="product-section">
+                                        {
+                                            displayStand.products.map((product) => {
+                                                let product_position3 = (product.position_x - displayStand.position_x) + " "
+                                                                        + (product.position_y - displayStand.position_y ) + " "
+                                                                        + (product.position_z - displayStand.position_z );
+                                                let rotation3 = product.rotation_x + " " + product.rotation_y + " " + product.rotation_z;
+                                                let scale3 = product.scale + " " + product.scale + " " + product.scale;
+                                                let gltfModel = "#"+product.name;
+                                                let product_key = product.id + product.name;
 
-                                                    console.log("DS: " + displayStand.position_x + " " + displayStand.position_y + " " + displayStand.position_z);
-                                                    console.log("product: " + product.position_x + " " + product.position_y + " " + product.position_z);
-                                                    console.log("final: " + product_position3);
-
-                                                    return (
+                                                return (
+                                                    <Entity
+                                                        key={product_key}
+                                                        id={product.id}
+                                                        name={product.name}
+                                                        position={product_position3}
+                                                        scale={scale3}
+                                                        type={product.type}
+                                                        isSelected={false}
+                                                    >
                                                         <Entity
-                                                            key={product_key}
-                                                            id={product.id}
-                                                            name={product.name}
-                                                            position={product_position3}
-                                                            scale={scale3}
-                                                            type={product.type}
-                                                            isSelected={false}
-                                                        >
-                                                            <Entity
-                                                                init-product
-                                                                gltf-model={gltfModel}
-                                                                rotation={rotation3}
-                                                                shadow="receive: true; cast: true" 
-                                                                class="clickable-products"
-                                                                events={{
-                                                                    //mouseenter: this.lockOrbitControls.bind(this),
-                                                                    //mouseleave: this.unlockOrbitControls.bind(this),
-                                                                    mousedown: this.lockOrbitControls.bind(this),
-                                                                    mouseup: this.unlockOrbitControls.bind(this),
-                                                                    click: this.clickObject.bind(this),
-                                                                }}
-                                                            />
-                                                        </Entity>
-                                                    )
-                                                })
-                                            }
-                                            </Entity>
+                                                            init-product
+                                                            gltf-model={gltfModel}
+                                                            rotation={rotation3}
+                                                            shadow="receive: true; cast: true" 
+                                                            class="clickable-products"
+                                                            events={{
+                                                                mousedown: this.lockOrbitControls.bind(this),
+                                                                mouseup: this.unlockOrbitControls.bind(this),
+                                                                click: this.clickObject.bind(this),
+                                                            }}
+                                                        />
+                                                    </Entity>
+                                                )
+                                            })
+                                        }
                                         </Entity>
-                                    :
-                                        <Entity id={displayStand.name} key={displayStand.name} position={position3} rotation={rotation3} scale={scale3} gltf-model={modelId} shadow="receive: true; cast: true">
-                                        </Entity>
+                                    </Entity>
                                 )
                             })
                         }
                     </Entity>
-                    {/* <Entity id="products" className="product-section">
-                        {
-                            displayStands.map((displayStand) => {
-                                return (
-                                    displayStand.products.map((product) => {
-                                        let position3 = product.position_x + " " + product.position_y + " " + product.position_z;
-                                        let rotation3 = product.rotation_x + " " + product.rotation_y + " " + product.rotation_z;
-                                        let scale3 = product.scale + " " + product.scale + " " + product.scale;
-                                        let gltfModel = "#"+product.name;
-                                        return (
-                                            <Entity
-                                                key={product.id}
-                                                id={product.id}
-                                                name={product.name}
-                                                position={position3}
-                                                scale={scale3}
-                                                isSelected={false}
-                                            >
-                                                <Entity
-                                                    init-product
-                                                    key={product.id}
-                                                    gltf-model={gltfModel}
-                                                    rotation={rotation3}
-                                                    shadow="receive: true; cast: true" 
-                                                    class="clickable-products"
-                                                    events={{
-                                                        //mouseenter: this.lockOrbitControls.bind(this),
-                                                        //mouseleave: this.unlockOrbitControls.bind(this),
-                                                        mousedown: this.lockOrbitControls.bind(this),
-                                                        mouseup: this.unlockOrbitControls.bind(this),
-                                                        click: this.clickObject.bind(this),
-                                                    }}
-                                                />
-                                            </Entity>
-                                        )
-                                    })
-                                )
-                            })
-                        }
-                    </Entity> */}
 
                     {/* <Entity primitive="a-camera" id="mainCamera" position="0 2 0" rotation="0 180 0" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;"> */}
                     <Entity
