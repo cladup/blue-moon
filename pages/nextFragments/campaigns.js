@@ -91,8 +91,8 @@ class Campaigns extends Component {
             "company": "YC",
             "title": "New Campaign",
             "position_x": "0.00",
-            "position_y": "2.00",
-            "position_z": "0.00",
+            "position_y": "3.00",
+            "position_z": "5.00",
             "rotation_x": "0.00",
             "rotation_y": "0.00",
             "rotation_z": "0.00",
@@ -119,8 +119,8 @@ class Campaigns extends Component {
             "company": "ORRi",
             "title": "ORRi Campaign",
             "position_x": "0.00",
-            "position_y": "2.00",
-            "position_z": "0.00",
+            "position_y": "3.00",
+            "position_z": "5.00",
             "rotation_x": "0.00",
             "rotation_y": "0.00",
             "rotation_z": "0.00",
@@ -224,7 +224,7 @@ class Campaigns extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(defaultCampaign)
+            body: JSON.stringify(orriCampaign)
         })
         .then(res => {
             return res.json();

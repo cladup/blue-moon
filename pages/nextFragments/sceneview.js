@@ -107,6 +107,9 @@ class SceneView extends Component {
         let campaign = this.props.campaign;
         let displayStands = campaign.display_stands;
 
+        let cameraPos = campaign.position_x + " " + campaign.position_y + " " + campaign.position_z;
+        let orbitControlsSetUp ="minDistance: 0.5; maxDistance: 50; initialPosition: "+cameraPos+"; enablePan: false;";
+
         return (
             <div className="height80">
                 {appRendered &&
@@ -146,7 +149,7 @@ class SceneView extends Component {
                     <Entity id="environments">
                         {(campaign.title == "Demo Campaign") ? this.demoCampaignEnvironment() : ''}
                         {(campaign.title == "New Campaign") ? this.demoCampaignEnvironment() : ''}
-                        {(campaign.title == "ORRi Campaign") ? this.orriCampaignEnvironment() : ''}
+                        {(campaign.company == "ORRi") ? this.orriCampaignEnvironment() : ''}
                     </Entity>
                     <Entity id="display_stands">
                         {
@@ -156,13 +159,6 @@ class SceneView extends Component {
                                 let scale3 = displayStand.scale + " " + displayStand.scale + " " + displayStand.scale;
                                 let modelId = "#"+displayStand.name;
                                 let dp_key = displayStand.id + displayStand.name;
-                                let model = '';
-                                if(displayStand.name == "a-box") {
-                                    model = `primitive='a-box'`;
-                                } else {
-                                    model = `gltf-model=${modelId}`;
-                                }
-
                                 return (
                                     <Entity
                                         id={displayStand.id}
@@ -176,7 +172,7 @@ class SceneView extends Component {
                                             gltf-model={modelId}
                                             scale={scale3}
                                             rotation={rotation3}
-                                            shadow="receive: true; cast: true"
+                                            //shadow="receive: true; cast: true"
                                             class="clickable-products"
                                             events={{
                                                 mousedown: this.lockOrbitControls.bind(this),
@@ -228,17 +224,12 @@ class SceneView extends Component {
                         }
                     </Entity>
 
-                    {/* <Entity primitive="a-camera" id="mainCamera" position="0 2 0" rotation="0 180 0" look-controls="reverseTouchDrag: true; reverseMouseDrag: true; touchEnabled: true;"> */}
+
                     <Entity
                         primitive="a-camera"
                         id="mainCamera"
                         look-controls
-                        orbit-controls="
-                            minDistance: 0.5;
-                            maxDistance: 50;
-                            initialPosition: 0 3 5;
-                            enablePan: false;
-                        "
+                        orbit-controls={orbitControlsSetUp}
                     >
                         <Entity id="cursor" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable-products;"/>
                     </Entity>
