@@ -3,6 +3,12 @@ AFRAME.registerComponent('init-product', {
     this.el.addEventListener('model-loaded', function ( obj ) { 
       let box = new THREE.Box3().setFromObject(obj.target.object3D);
       let pos = obj.target.parentElement.object3D.position;
+      
+      obj.target.parentElement.object3D.updateMatrixWorld();
+      let worldPos = new THREE.Vector3();
+      worldPos.setFromMatrixPosition(obj.target.object3D.matrixWorld);
+      pos = worldPos;
+
       let scale = obj.target.parentElement.object3D.scale;
       const center = new THREE.Vector3();
       box.getCenter(center);

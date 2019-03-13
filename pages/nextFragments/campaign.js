@@ -18,15 +18,23 @@ class Campaign extends Component {
         this.highlightSelectedProduct = this.highlightSelectedProduct.bind(this);
     }
 
-    highlightSelectedProduct(productId) {
-        if(productId == null) return;
-        let selectedProduct = document.getElementById('product'+productId);
-        if(selectedProduct.getAttribute("selected") == "false" || selectedProduct.getAttribute("selected") == null) {
-            selectedProduct.setAttribute("selected", "true");
-            selectedProduct.classList.add("bg-primary");
+    highlightSelectedProduct(id, type) {
+        if(id == null) return;
+        let selected = '';
+
+        if(type == 'displayStand') {
+            selected = document.getElementById('displayStand'+id);
+
         } else {
-            selectedProduct.setAttribute("selected", "false");
-            selectedProduct.classList.remove("bg-primary");
+            selected= document.getElementById('product'+id);
+        }
+
+        if(selected.getAttribute("selected") == "false" || selected.getAttribute("selected") == null ) {
+            selected.setAttribute("selected", "true");
+            selected.classList.add("bg-primary");
+        } else {
+            selected.setAttribute("selected", "false");
+            selected.classList.remove("bg-primary");
         }
     }
 
@@ -117,7 +125,7 @@ class Campaign extends Component {
                             {displayStands.map((displayStand) => {
                                 return (
                                     displayStand.products.map((product) => {
-                                        return (<div id={'product'+product.id} key={product.id} className="box-white">{product.name}</div>)
+                                        return (<div key={product.id} id={'product'+product.id} className="box-white">{product.name}</div>)
                                 }))
                             })}
                         </div>
@@ -126,7 +134,7 @@ class Campaign extends Component {
                                 <h6>Display Stands</h6>
                             </div>
                             {displayStands.map((displayStand) => {
-                                return (<div key={displayStand.id} className="box-white">{displayStand.name}</div>)
+                                return (<div key={displayStand.id} id={"displayStand"+displayStand.id} className="box-white">{displayStand.name}</div>)
                             })}
                         </div>
                     </div>

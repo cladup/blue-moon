@@ -125,66 +125,98 @@ class Campaigns extends Component {
             "rotation_y": "0.00",
             "rotation_z": "0.00",
             "display_stands": [
-                {
-                    "name": "a-box",
-                    "type": "displayStand",
-                    "position_x": "0.00",
-                    "position_y": "0.00",
-                    "position_z": "-2.50",
-                    "rotation_x": "0.00",
-                    "rotation_y": "0.00",
-                    "rotation_z": "0.00",
-                    "scale": "1",
-                    "format": "default",
-                    "click_event": "none",
-                    "animation": "none",
-                    "products": [
-                        {
-                            "name": "orri-handbag-01",
-                            "type": "bag",
-                            "position_x": "0.00",
-                            "position_y": "1.06",
-                            "position_z": "-2.50",
-                            "rotation_x": "0.00",
-                            "rotation_y": "-90.00",
-                            "rotation_z": "0.00",
-                            "scale": "0.16",
-                            "format": "default",
-                            "click_event": "none",
-                            "animation": "none"
-                        },
-                        {
-                            "name": "orri-handbag2",
-                            "type": "bag",
-                            "position_x": "2.00",
-                            "position_y": "1.06",
-                            "position_z": "-2.50",
-                            "rotation_x": "0.00",
-                            "rotation_y": "0.00",
-                            "rotation_z": "0.00",
-                            "scale": "0.16",
-                            "format": "default",
-                            "click_event": "none",
-                            "animation": "none"
-                        },
-                        {
-                            "name": "orri-handbag",
-                            "type": "bag",
-                            "position_x": "-2.00",
-                            "position_y": "1.06",
-                            "position_z": "-2.50",
-                            "rotation_x": "0.00",
-                            "rotation_y": "0.00",
-                            "rotation_z": "0.00",
-                            "scale": "0.16",
-                            "format": "default",
-                            "click_event": "none",
-                            "animation": "none"
-                        }
-                    ]
-                }
+               {
+                  "name": "a-box",
+                  "type": "displayStand",
+                  "position_x": "0.00",
+                  "position_y": "0.50",
+                  "position_z": "-2.50",
+                  "rotation_x": "0.00",
+                  "rotation_y": "0.00",
+                  "rotation_z": "0.00",
+                  "scale": "1",
+                  "format": "default",
+                  "click_event": "none",
+                  "animation": "none",
+                  "products": [
+                     {
+                        "name": "orri-handbag-01",
+                        "type": "bag",
+                        "position_x": "0.00",
+                        "position_y": "1.06",
+                        "position_z": "-2.50",
+                        "rotation_x": "0.00",
+                        "rotation_y": "-90.00",
+                        "rotation_z": "0.00",
+                        "scale": "0.16",
+                        "format": "default",
+                        "click_event": "none",
+                        "animation": "none"
+                     }
+                  ]
+               },
+               {
+                  "name": "a-box",
+                  "type": "displayStand",
+                  "position_x": "2.00",
+                  "position_y": "0.50",
+                  "position_z": "-2.50",
+                  "rotation_x": "0.00",
+                  "rotation_y": "0.00",
+                  "rotation_z": "0.00",
+                  "scale": "1",
+                  "format": "default",
+                  "click_event": "none",
+                  "animation": "none",
+                  "products": [
+                     {
+                        "name": "orri-handbag2",
+                        "type": "bag",
+                        "position_x": "2.00",
+                        "position_y": "1.06",
+                        "position_z": "-2.50",
+                        "rotation_x": "0.00",
+                        "rotation_y": "0.00",
+                        "rotation_z": "0.00",
+                        "scale": "0.16",
+                        "format": "default",
+                        "click_event": "none",
+                        "animation": "none"
+                     }
+                  ]
+               },
+               {
+                  "name": "a-box",
+                  "type": "displayStand",
+                  "position_x": "-2.00",
+                  "position_y": "0.50",
+                  "position_z": "-2.50",
+                  "rotation_x": "0.00",
+                  "rotation_y": "0.00",
+                  "rotation_z": "0.00",
+                  "scale": "1",
+                  "format": "default",
+                  "click_event": "none",
+                  "animation": "none",
+                  "products": [
+                     {
+                        "name": "orri-handbag",
+                        "type": "bag",
+                        "position_x": "-2.00",
+                        "position_y": "1.06",
+                        "position_z": "-2.50",
+                        "rotation_x": "0.00",
+                        "rotation_y": "0.00",
+                        "rotation_z": "0.00",
+                        "scale": "0.16",
+                        "format": "default",
+                        "click_event": "none",
+                        "animation": "none"
+                     }
+                  ]
+               }
             ]
-        };
+         };
         const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL;
         fetch(CAMPAIGN_API_URL, {
             method: 'POST',
