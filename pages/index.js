@@ -20,8 +20,6 @@ class Index extends Component {
 
 
     render() {
-        // console.log(this.props.router.query);
-
         let routerQuery = this.props.router.query;
 
         return (
