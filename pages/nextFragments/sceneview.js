@@ -13,7 +13,7 @@ class SceneView extends Component {
 
     componentDidMount() {
         if (typeof window !== 'undefined') {
-            let aframe = require('aframe');
+            require('aframe');
             require('aframe-environment-component');
             require('aframe-orbit-controls');
 
@@ -38,26 +38,14 @@ class SceneView extends Component {
                 this.deselectObject(prevTarget);
                 prevTarget.setAttribute('wasd-controls', {enabled: 'false'});
             }
-            
             this.state.selectedId = target.getAttribute('id');
             this.selectObject(target);
             target.setAttribute('wasd-controls', {enabled: 'true'});
+        } else {
+            this.state.selectedId = '';
+            this.deselectObject(target);
+            target.setAttribute('wasd-controls', {enabled: 'false'});
         }
-        
-        // if(target.getAttribute('isSelected') == 'false') {
-        //     target.setAttribute('wasd-controls', {enabled: 'true'});
-        //     target.setAttribute('isSelected', true);
-        //     this.selectObject(target);
-        // } else {
-        //     target.setAttribute('wasd-controls', {enabled: 'false'});
-        //     target.setAttribute('isSelected', false);
-        //     this.deselectObject(target);
-        //     // console.log("new position: "
-        //     //             +   Number(Math.round(target.getAttribute('position').x+'e2')+'e-2')
-        //     //             + ", " + Number(Math.round(target.getAttribute('position').y+'e2')+'e-2')
-        //     //             + ", " + Number(Math.round(target.getAttribute('position').z+'e2')+'e-2'));
-        //     this.props.sendProductTransform(target.getAttribute('id'), target.getAttribute('position'));
-        // }
     }
     
     selectObject = (target) => {
@@ -120,13 +108,13 @@ class SceneView extends Component {
         let orbitControlsSetUp ="minDistance: 0.5; maxDistance: 50; initialPosition: "+cameraPos+"; enablePan: false;";
 
         return (
-            <div className="height80">
+            <div id="sceneviewDiv" className="height80">
                 {appRendered &&
                 <Scene
                     //stats
                     embedded
                     vr-mode-ui="enabled: false;"
-                    //enable-inspector-onload
+                    enable-inspector-onload
                 >
                     <a-assets
                         //timeout="3000"    // default value: 3000
@@ -177,11 +165,12 @@ class SceneView extends Component {
                                         isSelected={false}
                                     >
                                         <Entity
+                                            init-product
                                             {...((displayStand.name.startsWith("a-")) ? {primitive: displayStand.name} : {/*gltf-model: modelId*/} )}
                                             gltf-model={modelId}
                                             scale={scale3}
                                             rotation={rotation3}
-                                            shadow
+                                            shadow="receive: true; cast: true" 
                                             class="clickable-products"
                                             events={{
                                                 //mousedown: this.lockOrbitControls.bind(this),
@@ -214,11 +203,11 @@ class SceneView extends Component {
                                                             init-product
                                                             gltf-model={gltfModel}
                                                             rotation={rotation3}
-                                                            shadow
+                                                            shadow="receive: true; cast: true" 
                                                             class="clickable-products"
                                                             events={{
-                                                                mousedown: this.lockOrbitControls.bind(this),
-                                                                mouseup: this.unlockOrbitControls.bind(this),
+                                                                //mousedown: this.lockOrbitControls.bind(this),
+                                                                //mouseup: this.unlockOrbitControls.bind(this),
                                                                 click: this.clickObject.bind(this),
                                                             }}
                                                         />
@@ -236,9 +225,9 @@ class SceneView extends Component {
                     <Entity
                         primitive="a-camera"
                         id="mainCamera"
-                        look-controls-enabled="false"
-                        look-controls
-                        orbit-controls={orbitControlsSetUp}
+                        position={cameraPos}
+                        wasd-controls="false"
+                        //orbit-controls={orbitControlsSetUp}
                     >
                         <Entity id="cursor" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .clickable-products;"/>
                     </Entity>

@@ -20,6 +20,8 @@ AFRAME.registerComponent('a-ada-ocean', {
 		src: { type: 'asset' },
 		width: { default: 10000 },
 		height: { default: 10000 },
+		inclination: { default: 0.1 },
+		azimuth: { default: 0.4 },
 		distortionScale: { default: 4 },
 		opacity: {
 			default: 1.0,
@@ -97,8 +99,8 @@ AFRAME.registerComponent('a-ada-ocean', {
 
 			var parameters = {
 					distance: 400,
-					inclination: 0.1,
-					azimuth: 0.4
+					inclination: this.data.inclination,
+					azimuth: this.data.azimuth
 			};
 
 			var cubeCamera = new THREE.CubeCamera( 1, 20000, 256 );
@@ -130,11 +132,15 @@ AFRAME.registerPrimitive('a-ada-ocean', {
 	},
 	mappings: {
 		width: 'a-ada-ocean.width',
-		depth: 'a-ada-ocean.depth',
+		height: 'a-ada-ocean.height',
 		color: 'a-ada-ocean.color',
 		opacity: 'a-ada-ocean.opacity',
 		oceanlight: 'a-ada-ocean.oceanLight',
-		asset: 'a-ada-ocean.asset',
+		sundirection: 'a-ada-ocean.sunDirection',
+		distortionscale: 'a-ada-ocean.distortionScale',
+		inclination: 'a-ada-ocean.inclination',
+		azimuth: 'a-ada-ocean.azimuth',
+		src: 'a-ada-ocean.src',
 		'src-height': 'a-ada-ocean.srcWidth',
 		'src-width': 'a-ada-ocean.srcHeight'
 	}

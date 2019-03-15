@@ -122,7 +122,7 @@ THREE.Water = function ( geometry, options ) {
 			'varying vec4 worldPosition;',
 
 			'vec4 getNoise( vec2 uv ) {',
-			'	vec2 uv0 = ( uv / 103.0 ) + vec2(time / 17.0, time / 29.0);',
+			'	vec2 uv0 = -( uv / 103.0 ) + vec2(time / 17.0, time / 29.0);',
 			'	vec2 uv1 = uv / 107.0-vec2( time / -19.0, time / 31.0 );',
 			'	vec2 uv2 = uv / vec2( 8907.0, 9803.0 ) + vec2( time / 101.0, time / 97.0 );',
 			'	vec2 uv3 = uv / vec2( 1091.0, 1027.0 ) - vec2( time / 109.0, time / -113.0 );',
@@ -161,7 +161,7 @@ THREE.Water = function ( geometry, options ) {
 
 			'	float distance = length(worldToEye);',
 
-			'	vec2 distortion = surfaceNormal.xz * ( 0.001 + 1.0 / distance ) * distortionScale;',
+			'	vec2 distortion = surfaceNormal.xz * ( 0.001 + 0.1 / distance ) * distortionScale;',
 			'	vec3 reflectionSample = vec3( texture2D( mirrorSampler, mirrorCoord.xy / mirrorCoord.w + distortion ) );',
 
 			'	float theta = max( dot( eyeDirection, surfaceNormal ), 0.0 );',
@@ -179,6 +179,11 @@ THREE.Water = function ( geometry, options ) {
 		].join( '\n' )
 
 	};
+
+	//on void main(), change line 164
+	//'	vec2 distortion = surfaceNormal.xz * ( 0.001 + 1.0 / distance ) * distortionScale;',
+	//for direction, change line 125
+	//'	vec2 uv0 = -( uv / 103.0 ) + vec2(time / 17.0, time / 29.0);',
 
 	var material = new THREE.ShaderMaterial( {
 		fragmentShader: mirrorShader.fragmentShader,
