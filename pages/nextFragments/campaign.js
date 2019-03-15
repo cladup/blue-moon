@@ -93,7 +93,6 @@ class Campaign extends Component {
     render() {
         let campaign = this.state.campaign;
         let displayStands = campaign.display_stands;
-
         return (
             <div>
                 <div className="box-white row">
