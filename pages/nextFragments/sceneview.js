@@ -126,7 +126,7 @@ class SceneView extends Component {
                     //stats
                     embedded
                     vr-mode-ui="enabled: false;"
-                    enable-inspector-onload
+                    //enable-inspector-onload
                 >
                     <a-assets
                         //timeout="3000"    // default value: 3000
