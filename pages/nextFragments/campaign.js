@@ -22,12 +22,8 @@ class Campaign extends Component {
         if(id == null) return;
         let selected = '';
 
-        if(type == 'displayStand') {
-            selected = document.getElementById('displayStand'+id);
-
-        } else {
-            selected= document.getElementById('product'+id);
-        }
+        if(type == 'displayStand')  { selected = document.getElementById('displayStand'+id); }
+        else                        { selected= document.getElementById('product'+id); }
 
         if(selected.getAttribute("selected") == "false" || selected.getAttribute("selected") == null ) {
             selected.setAttribute("selected", "true");
@@ -38,6 +34,8 @@ class Campaign extends Component {
         }
     }
 
+    // NOT USED ANYMORE
+    // better version to be updated in updateCampaign()
     getProductTransform(productId, newPosition) {
         let ds_index, product_index;
         let displayStands = this.state.campaign['display_stands'];
@@ -66,6 +64,8 @@ class Campaign extends Component {
         })
     }
 
+    // go through the campaign elements to re-define transform and stuff - NEED TO DO THIS
+    // then pass the new campaign to server
     updateCampaign() {
         let campaignId = this.state.campaign.id;
         console.log("send update campaign " + campaignId + " request");
@@ -85,9 +85,9 @@ class Campaign extends Component {
         })
     }
 
-    // reset camera transform to campaign parameters 
+    // pop-up a new window to show end-user view
     previewCampaign() {
-        console.log("preview button clicked");
+        console.log("preview button clicked.");
     }
 
     render() {
@@ -114,8 +114,7 @@ class Campaign extends Component {
                     <div className="col-9 no-padding">
                         <SceneView
                             campaign={campaign}
-                            sendProductTransform={this.getProductTransform}
-                            selectedProduct={this.highlightSelectedProduct}
+                            highlightSelectedProduct={this.highlightSelectedProduct}
                         />
                     </div>
                     <div className="col-3">

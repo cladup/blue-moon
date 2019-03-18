@@ -101,7 +101,7 @@ class Campaigns extends Component {
                     "name": "demoTable",
                     "type": "displayStand",
                     "position_x": "0.40",
-                    "position_y": "23.17",
+                    "position_y": "-2",
                     "position_z": "-0.50",
                     "rotation_x": "0.00",
                     "rotation_y": "0.00",

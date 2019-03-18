@@ -49,11 +49,11 @@ class SceneView extends Component {
     }
     
     selectObject = (target) => {
-        this.props.selectedProduct(target.getAttribute('id'), target.getAttribute('type'));
+        this.props.highlightSelectedProduct(target.getAttribute('id'), target.getAttribute('type'));
     }
     
     deselectObject = (target) => {
-        this.props.selectedProduct(target.getAttribute('id'),  target.getAttribute('type'));
+        this.props.highlightSelectedProduct(target.getAttribute('id'),  target.getAttribute('type'));
     }
 
     lockOrbitControls = (args) => {
