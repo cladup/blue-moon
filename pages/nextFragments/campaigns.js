@@ -224,8 +224,8 @@ class Campaigns extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(defaultCampaign)
-            // body: JSON.stringify(orriCampaign)
+            // body: JSON.stringify(defaultCampaign)
+            body: JSON.stringify(orriCampaign)
         })
         .then(res => {
             return res.json();

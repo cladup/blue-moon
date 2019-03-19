@@ -156,12 +156,17 @@ class SceneView extends Component {
                                 let scale3 = displayStand.scale + " " + displayStand.scale + " " + displayStand.scale;
                                 let modelId = "#"+displayStand.name;
                                 let dp_key = displayStand.id + displayStand.name;
+                                let dp_products_id = displayStand.id + displayStand.name + "_products";
                                 return (
                                     <Entity
                                         id={displayStand.id}
                                         key={dp_key}
                                         position={dp_position3}
+                                        name={displayStand.name}
                                         type={displayStand.type}
+                                        format={displayStand.format}
+                                        click_event={displayStand.click_event}
+                                        dp_animation={displayStand.animation}
                                         isSelected={false}
                                     >
                                         <Entity
@@ -178,7 +183,7 @@ class SceneView extends Component {
                                                 click: this.clickObject.bind(this),
                                             }}
                                         />
-                                        <Entity id="products" className="product-section">
+                                        <Entity id={dp_products_id} className="product-section">
                                         {
                                             displayStand.products.map((product) => {
                                                 let product_position3 = (product.position_x - displayStand.position_x) + " "
@@ -194,15 +199,18 @@ class SceneView extends Component {
                                                         key={product_key}
                                                         id={product.id}
                                                         name={product.name}
-                                                        position={product_position3}
-                                                        scale={scale3}
                                                         type={product.type}
+                                                        position={product_position3}
+                                                        format={product.format}
+                                                        click_event={product.click_event}
+                                                        product_animation={product.animation}
                                                         isSelected={false}
                                                     >
                                                         <Entity
                                                             init-product
                                                             gltf-model={gltfModel}
                                                             rotation={rotation3}
+                                                            scale={scale3}
                                                             shadow="receive: true; cast: true" 
                                                             class="clickable-products"
                                                             events={{

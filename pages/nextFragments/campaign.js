@@ -64,10 +64,74 @@ class Campaign extends Component {
         })
     }
 
-    // go through the campaign elements to re-define transform and stuff - NEED TO DO THIS
+    // go through the campaign elements to re-create the whole campaign json - NEED TO DO THIS
     // then pass the new campaign to server
     updateCampaign() {
-        let campaignId = this.state.campaign.id;
+        let currentCampaign = this.state.campaign;
+        let new_campaign = {
+            "id": currentCampaign.id,
+            "company": currentCampaign.company,
+            "title": currentCampaign.title,
+            "position_x": Number(Math.round(currentCampaign.position_x+'e2')+'e-2'),
+            "position_y": Number(Math.round(currentCampaign.position_y+'e2')+'e-2'),
+            "position_z": Number(Math.round(currentCampaign.position_z+'e2')+'e-2'),
+            "rotation_x": Number(Math.round(currentCampaign.rotation_x+'e2')+'e-2'),
+            "rotation_y": Number(Math.round(currentCampaign.rotation_y+'e2')+'e-2'),
+            "rotation_z": Number(Math.round(currentCampaign.rotation_z+'e2')+'e-2'),
+            "display_stands":[]
+        };
+
+        let display_stands = document.getElementById('display_stands');
+        
+        for(let i = 0; i < display_stands.childElementCount; i++) {
+            let display_stand = display_stands.children[i];
+            let display_stand_model = display_stand.children[0];
+
+            let new_display_stand = {
+                "id": display_stand.getAttribute("id"),
+                "name": display_stand.getAttribute("name"),
+                "type": display_stand.getAttribute("type"),
+                "position_x": Number(Math.round(display_stand.getAttribute("position").x+'e2')+'e-2'),
+                "position_y": Number(Math.round(display_stand.getAttribute("position").y+'e2')+'e-2'),
+                "position_z": Number(Math.round(display_stand.getAttribute("position").z+'e2')+'e-2'),
+                "rotation_x": Number(Math.round(display_stand_model.getAttribute("rotation").x+'e2')+'e-2'),
+                "rotation_y": Number(Math.round(display_stand_model.getAttribute("rotation").y+'e2')+'e-2'),
+                "rotation_z": Number(Math.round(display_stand_model.getAttribute("rotation").z+'e2')+'e-2'),
+                "scale": Number(Math.round(display_stand_model.getAttribute("scale").x+'e2')+'e-2'),
+                "format": display_stand.getAttribute("format"),
+                "click_event": display_stand.getAttribute("click_event"),
+                "animation": display_stand.getAttribute("dp_animation"),
+                "products": []
+            }
+
+            for(let j=0; j<display_stand.children[1].childElementCount; j++) {
+                let product = display_stand.children[1].children[j];
+                let product_model = product.children[0];
+                let new_product = {
+                   "id": product.getAttribute("id"),
+                   "name": product.getAttribute("name"),
+                   "type": product.getAttribute("type"),
+                   "position_x": Number(Math.round(product.parentElement.getAttribute("position").x+'e2')+'e-2'),
+                   "position_y": Number(Math.round(product.parentElement.getAttribute("position").y+'e2')+'e-2'),
+                   "position_z": Number(Math.round(product.parentElement.getAttribute("position").z+'e2')+'e-2'),
+                   "rotation_x": Number(Math.round(product_model.getAttribute("rotation").x+'e2')+'e-2'),
+                   "rotation_y": Number(Math.round(product_model.getAttribute("rotation").y+'e2')+'e-2'),
+                   "rotation_z": Number(Math.round(product_model.getAttribute("rotation").z+'e2')+'e-2'),
+                   "scale": Number(Math.round(product_model.getAttribute("scale").x+'e2')+'e-2'),
+                   "scale": product_model.getAttribute("scale").x,
+                   "format": product.getAttribute("format"),
+                   "click_event": product.getAttribute("click_event"),
+                   "animation": product.getAttribute("product_animation")
+                }
+                new_display_stand.products.push(new_product);
+            }
+
+            new_campaign.display_stands.push(new_display_stand);
+        }
+
+        console.log(JSON.stringify(new_campaign));
+
+        let campaignId = currentCampaign.id;
         console.log("send update campaign " + campaignId + " request");
         const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL + campaignId;
         fetch(CAMPAIGN_API_URL, {
@@ -76,7 +140,7 @@ class Campaign extends Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(this.state.campaign)
+            body: JSON.stringify(new_campaign)
         })
         .then(data => {
             console.log("campaign " + campaignId + " updated.");
