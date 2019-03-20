@@ -91,9 +91,11 @@ class Campaign extends Component {
                 "id": display_stand.getAttribute("id"),
                 "name": display_stand.getAttribute("name"),
                 "type": display_stand.getAttribute("type"),
-                "position_x": Number(Math.round(display_stand.getAttribute("position").x+'e2')+'e-2'),
-                "position_y": Number(Math.round(display_stand.getAttribute("position").y+'e2')+'e-2'),
-                "position_z": Number(Math.round(display_stand.getAttribute("position").z+'e2')+'e-2'),
+                "position_x": Number(Math.round(display_stand.object3D.position.x+'e2')+'e-2'),
+                "position_y": Number(Math.round(display_stand.object3D.position.y+'e2')+'e-2'),
+                "position_z": Number(Math.round(display_stand.object3D.position.z+'e2')+'e-2'),
+                // obejct3D.rotation returns euler value (0, 2PI)
+                // getAttribute("rotation") returns degree value (0, 360)
                 "rotation_x": Number(Math.round(display_stand_model.getAttribute("rotation").x+'e2')+'e-2'),
                 "rotation_y": Number(Math.round(display_stand_model.getAttribute("rotation").y+'e2')+'e-2'),
                 "rotation_z": Number(Math.round(display_stand_model.getAttribute("rotation").z+'e2')+'e-2'),
@@ -107,18 +109,24 @@ class Campaign extends Component {
             for(let j=0; j<display_stand.children[1].childElementCount; j++) {
                 let product = display_stand.children[1].children[j];
                 let product_model = product.children[0];
+                let product_world_pos = {
+                    x: display_stand.object3D.position.x + product.object3D.position.x,
+                    y: display_stand.object3D.position.y + product.object3D.position.y,
+                    z: display_stand.object3D.position.z + product.object3D.position.z
+                }
+                
+
                 let new_product = {
                    "id": product.getAttribute("id"),
                    "name": product.getAttribute("name"),
                    "type": product.getAttribute("type"),
-                   "position_x": Number(Math.round(product.parentElement.getAttribute("position").x+'e2')+'e-2'),
-                   "position_y": Number(Math.round(product.parentElement.getAttribute("position").y+'e2')+'e-2'),
-                   "position_z": Number(Math.round(product.parentElement.getAttribute("position").z+'e2')+'e-2'),
+                   "position_x": Number(Math.round(product_world_pos.x+'e2')+'e-2'),
+                   "position_y": Number(Math.round(product_world_pos.y+'e2')+'e-2'),
+                   "position_z": Number(Math.round(product_world_pos.z+'e2')+'e-2'),
                    "rotation_x": Number(Math.round(product_model.getAttribute("rotation").x+'e2')+'e-2'),
                    "rotation_y": Number(Math.round(product_model.getAttribute("rotation").y+'e2')+'e-2'),
                    "rotation_z": Number(Math.round(product_model.getAttribute("rotation").z+'e2')+'e-2'),
                    "scale": Number(Math.round(product_model.getAttribute("scale").x+'e2')+'e-2'),
-                   "scale": product_model.getAttribute("scale").x,
                    "format": product.getAttribute("format"),
                    "click_event": product.getAttribute("click_event"),
                    "animation": product.getAttribute("product_animation")
@@ -129,7 +137,8 @@ class Campaign extends Component {
             new_campaign.display_stands.push(new_display_stand);
         }
 
-        console.log(JSON.stringify(new_campaign));
+        // console.log(JSON.stringify(new_campaign));
+        console.log(new_campaign);
 
         let campaignId = currentCampaign.id;
         console.log("send update campaign " + campaignId + " request");
@@ -144,7 +153,6 @@ class Campaign extends Component {
         })
         .then(data => {
             console.log("campaign " + campaignId + " updated.");
-            // return redirect('', "/Campaigns/"+data.data.id);
             return redirect('', "/Campaigns/"+campaignId);
         })
     }
