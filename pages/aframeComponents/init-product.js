@@ -18,6 +18,15 @@ AFRAME.registerComponent('init-product', {
         -(pos.z - center.z)/scale.z)
       );
       console.log(obj.target.parentElement.id + " has recentered.");
+
+      // --- 2019-03-20 ychoi
+      obj.target.init_pos = {
+        x: obj.target.object3D.position.x,
+        y: obj.target.object3D.position.y,
+        z: obj.target.object3D.position.z,
+      }
+      // --- 2019-03-20 ychoi
+
     });
   }
 });

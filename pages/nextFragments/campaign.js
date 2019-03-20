@@ -84,8 +84,8 @@ class Campaign extends Component {
         let display_stands = document.getElementById('display_stands');
         
         for(let i = 0; i < display_stands.childElementCount; i++) {
-            let display_stand = display_stands.children[i];
-            let display_stand_model = display_stand.children[0];
+            let display_stand = display_stands.childNodes[i];
+            let display_stand_model = display_stand.childNodes[0];
 
             let new_display_stand = {
                 "id": display_stand.getAttribute("id"),
@@ -106,15 +106,21 @@ class Campaign extends Component {
                 "products": []
             }
 
-            for(let j=0; j<display_stand.children[1].childElementCount; j++) {
-                let product = display_stand.children[1].children[j];
-                let product_model = product.children[0];
-                let product_world_pos = {
-                    x: display_stand.object3D.position.x + product.object3D.position.x,
-                    y: display_stand.object3D.position.y + product.object3D.position.y,
-                    z: display_stand.object3D.position.z + product.object3D.position.z
+            for(let j=0; j<display_stand.childNodes[1].childElementCount; j++) {
+                let product = display_stand.childNodes[1].childNodes[j];
+                let product_model = product.childNodes[0];
+
+                let translated_pos = {
+                    x: product_model.object3D.position.x - product_model.init_pos.x,
+                    y: product_model.object3D.position.y - product_model.init_pos.y,
+                    z: product_model.object3D.position.z - product_model.init_pos.z
                 }
-                
+
+                let product_world_pos = {
+                    x: display_stand.object3D.position.x + product.object3D.position.x + translated_pos.x,
+                    y: display_stand.object3D.position.y + product.object3D.position.y + translated_pos.y,
+                    z: display_stand.object3D.position.z + product.object3D.position.z + translated_pos.z
+                }
 
                 let new_product = {
                    "id": product.getAttribute("id"),

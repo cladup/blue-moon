@@ -180,7 +180,7 @@ class SceneView extends Component {
                                             events={{
                                                 //mousedown: this.lockOrbitControls.bind(this),
                                                 //mouseup: this.unlockOrbitControls.bind(this),
-                                                click: this.clickObject.bind(this),
+                                                click: this.clickObject.bind(this)
                                             }}
                                         />
                                         <Entity id={dp_products_id} className="product-section">
@@ -216,7 +216,7 @@ class SceneView extends Component {
                                                             events={{
                                                                 //mousedown: this.lockOrbitControls.bind(this),
                                                                 //mouseup: this.unlockOrbitControls.bind(this),
-                                                                click: this.clickObject.bind(this),
+                                                                click: this.clickObject.bind(this)
                                                             }}
                                                         />
                                                     </Entity>
