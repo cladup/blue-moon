@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import {Entity, Scene} from 'aframe-react';
 
 class SceneView extends Component {

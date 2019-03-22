@@ -1,21 +1,53 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import SceneView from './sceneview';
-import redirect from 'next-redirect'
+import redirect from 'next-redirect';
 
 class Campaign extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            CAMPAIGN_API_URL: props.campaignApiUrl,
-            OBJECT_URL: props.objectUrl,
+            CAMPAIGN_API_URL: props.campaign_api_url,
+            OBJECT_API_URL: props.object_api_url,
             campaign: props.campaign,
-            selectedProductId: null
+            selectedProductId: null,
+            
         };
 
         this.deleteCampaign = this.deleteCampaign.bind(this);
         this.updateCampaign = this.updateCampaign.bind(this);
         this.getProductTransform = this.getProductTransform.bind(this);
         this.highlightSelectedProduct = this.highlightSelectedProduct.bind(this);
+
+        this.upload = this.upload.bind(this);
+        this.fileInput = React.createRef();
+    }
+    
+    // Event handler executed when a file is selected
+    onSelectFile = (args) => this.upload(args);
+
+    upload(event) {
+        event.preventDefault();
+        // alert(`Selected file - ${this.fileInput.current.files[0].name}`);
+        let fileToUpload = this.fileInput.current.files[0];
+        console.log("upload following file to the server:");
+        console.log(fileToUpload);
+
+        const OBJECT_API_URL = this.state.OBJECT_API_URL;
+        fetch(OBJECT_API_URL, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: fileToUpload
+        }).then(
+          response => response.json() // if the response is a JSON object
+        ).then(
+          success => console.log(success) // Handle the success response object
+        ).catch(
+          error => console.log(error) // Handle the error response object
+        );
+
     }
 
     highlightSelectedProduct(id, type) {
@@ -143,9 +175,6 @@ class Campaign extends Component {
             new_campaign.display_stands.push(new_display_stand);
         }
 
-        // console.log(JSON.stringify(new_campaign));
-        console.log(new_campaign);
-
         let campaignId = currentCampaign.id;
         console.log("send update campaign " + campaignId + " request");
         const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL + campaignId;
@@ -198,7 +227,16 @@ class Campaign extends Component {
                     <div className="col-3">
                         <div className="box-white">
                             <div className="box-white">
-                                <h6>Products</h6>
+                                <h6 className="align-middle">Products</h6>
+                                <form className="input-group small" onSubmit={this.upload}>
+                                    <div class="custom-file">
+                                        <input type="file" className="custom-file-input" ref={this.fileInput} onChange={this.onSelectFile} />
+                                        <label className="custom-file-label" />
+                                    </div>
+                                    {/* <div className="input-group-append small">
+                                        <button type="submit" className="btn btn-outline-primary btn-sm">Upload</button>
+                                    </div> */}
+                                </form>
                             </div>
                             {displayStands.map((displayStand) => {
                                 return (

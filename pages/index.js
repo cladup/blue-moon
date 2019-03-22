@@ -1,11 +1,11 @@
-import '../style.css'
-import Head from 'next/head'
-import React, {Component} from 'react'
-import {withRouter} from 'next/router'
+import '../style.css';
+import Head from 'next/head';
+import React, {Component} from 'react';
+import {withRouter} from 'next/router';
 
-import Header from './nextFragments/header'
-import Campaigns from './nextFragments/campaigns'
-import Products from './nextFragments/products'
+import Header from './nextFragments/header';
+import Campaigns from './nextFragments/campaigns';
+import Products from './nextFragments/products';
 
 class Index extends Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class Index extends Component {
         this.state = {
             CAMPAIGN_API_URL: 'http://stolenbyte.kr:8080/api/v1/campaigns/',
             //CAMPAIGN_API_URL: 'http://hyperion.clad-up.com/api/v1/campaigns/',
-            OBJECT_API_URL: 'http://objection.clad-up.com/api/v1/objects/',
+            OBJECT_API_URL: 'http://objection.clad-up.com/api/v1/objects',
             value: '',
         };
     }
@@ -37,8 +37,8 @@ class Index extends Component {
                                 ?
                                     <Campaigns
                                         campaignId={routerQuery.campaignId}
-                                        campaignApiUrl={this.state.CAMPAIGN_API_URL}
-                                        objectUrl={this.state.OBJECT_URL}
+                                        campaign_api_url={this.state.CAMPAIGN_API_URL}
+                                        object_api_url={this.state.OBJECT_API_URL}
                                     />
                                 : ''
                             }

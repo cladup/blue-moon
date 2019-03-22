@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import Link from 'next/link'
-import Campaign from './campaign'
-import redirect from 'next-redirect'
+import React, {Component} from 'react';
+import Link from 'next/link';
+import Campaign from './campaign';
+import redirect from 'next-redirect';
 
 const PostLink = (props) => (
     <Link as={`/Campaigns/${props.campaignId}`} href={`/Campaigns/${props.campaignId}`}>
@@ -13,8 +13,8 @@ class Campaigns extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            CAMPAIGN_API_URL: props.campaignApiUrl,
-            OBJECT_URL: props.objectUrl,
+            CAMPAIGN_API_URL: props.campaign_api_url,
+            OBJECT_API_URL: props.object_api_url,
             error: null,        // api server - get error
             isLoaded: false,    // api server - get flag
             campaigns: [],
@@ -281,8 +281,8 @@ class Campaigns extends Component {
                             : (campaignFound)
                                 ?
                                     <Campaign
-                                        campaignApiUrl={this.state.CAMPAIGN_API_URL}
-                                        objectUrl={this.state.OBJECT_URL}
+                                        campaign_api_url={this.state.CAMPAIGN_API_URL}
+                                        object_api_url={this.state.OBJECT_API_URL}
                                         campaign={campaign}
                                     /> 
                                 : <div>This campaign does not exist anymore</div>
