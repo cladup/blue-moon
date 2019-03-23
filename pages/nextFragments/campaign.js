@@ -15,7 +15,6 @@ class Campaign extends Component {
 
         this.deleteCampaign = this.deleteCampaign.bind(this);
         this.updateCampaign = this.updateCampaign.bind(this);
-        this.getProductTransform = this.getProductTransform.bind(this);
         this.highlightSelectedProduct = this.highlightSelectedProduct.bind(this);
 
         this.upload = this.upload.bind(this);
@@ -27,27 +26,54 @@ class Campaign extends Component {
 
     upload(event) {
         event.preventDefault();
-        // alert(`Selected file - ${this.fileInput.current.files[0].name}`);
         let fileToUpload = this.fileInput.current.files[0];
         console.log("upload following file to the server:");
         console.log(fileToUpload);
 
+        // const OBJECT_API_URL = this.state.OBJECT_API_URL;
+        // fetch(OBJECT_API_URL, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'multipart/form-data',
+        //     },
+        //     body: fileToUpload
+        // }).then(
+        //   response => response.json() // if the response is a JSON object
+        // ).then(
+        //   success => {  // Handle the success response object
+        //       console.log("upload success");
+        //       console.log(success);     
+        //   }
+        // ).catch(
+        //   error => {    // Handle the error response object
+        //     console.log("upload error");
+        //     console.log(error);
+        //   }
+        // );
+
+        var input = this.fileInput.current;
+        var data = new FormData();
+        data.append('object_file', input.files[0]);
+
+
         const OBJECT_API_URL = this.state.OBJECT_API_URL;
         fetch(OBJECT_API_URL, {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: fileToUpload
+            body: data
         }).then(
-          response => response.json() // if the response is a JSON object
+            response => response.json() // if the response is a JSON object
         ).then(
-          success => console.log(success) // Handle the success response object
+            success => {  // Handle the success response object
+                console.log("upload success");
+                console.log(success);     
+            }
         ).catch(
-          error => console.log(error) // Handle the error response object
+            error => {    // Handle the error response object
+            console.log("upload error");
+            console.log(error);
+            }
         );
-
     }
 
     highlightSelectedProduct(id, type) {
@@ -66,23 +92,6 @@ class Campaign extends Component {
         }
     }
 
-    // NOT USED ANYMORE
-    // better version to be updated in updateCampaign()
-    getProductTransform(productId, newPosition) {
-        let ds_index, product_index;
-        let displayStands = this.state.campaign['display_stands'];
-        for(ds_index=0; ds_index<displayStands.length; ds_index++) {
-            let products = displayStands[ds_index]['products'];
-            for(product_index=0; product_index<products.length; product_index++) {
-                if(products[product_index]['id'] == productId) {
-                    products[product_index]['position_x'] = Number(Math.round(newPosition.x+'e2')+'e-2');
-                    products[product_index]['position_y'] = Number(Math.round(newPosition.y+'e2')+'e-2');
-                    products[product_index]['position_z'] = Number(Math.round(newPosition.z+'e2')+'e-2');
-                }
-            }
-        }
-    }
-
     deleteCampaign() {
         let campaignId = this.state.campaign.id;
         console.log("send delete campaign " + campaignId + " request");
@@ -96,8 +105,8 @@ class Campaign extends Component {
         })
     }
 
-    // go through the campaign elements to re-create the whole campaign json - NEED TO DO THIS
-    // then pass the new campaign to server
+    // parse current scene into a new campaign,
+    // then update to the server
     updateCampaign() {
         let currentCampaign = this.state.campaign;
         let new_campaign = {
@@ -229,7 +238,7 @@ class Campaign extends Component {
                             <div className="box-white">
                                 <h6 className="align-middle">Products</h6>
                                 <form className="input-group small" onSubmit={this.upload}>
-                                    <div class="custom-file">
+                                    <div className="custom-file">
                                         <input type="file" className="custom-file-input" ref={this.fileInput} onChange={this.onSelectFile} />
                                         <label className="custom-file-label" />
                                     </div>
