@@ -28,7 +28,7 @@ class Campaigns extends Component {
     
     componentDidMount() {
         //=====================================================================
-        // get all the campaign infomations from api server
+        // get campaign list from api server
         const CAMPAIGN_LIST_API_URL = this.state.CAMPAIGN_API_URL;
         fetch(CAMPAIGN_LIST_API_URL)
             .then(res => res.json())
@@ -43,7 +43,7 @@ class Campaigns extends Component {
             // instead of a catch() block so that we don't swallow
             // exceptions from actual bugs in components.
             (error) => {
-                this.setState({
+                    this.setState({
                     isLoaded: true,
                     error
                 });
@@ -51,7 +51,7 @@ class Campaigns extends Component {
         )
         
         //=====================================================================
-        // get the selected campaign infomation from api server
+        // get the selected campaign information from api server
         let campaignId = this.props.campaignId;
         if(!isNaN(campaignId)) {
             const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL+campaignId;
@@ -127,7 +127,7 @@ class Campaigns extends Component {
             "display_stands": [
                {
                   "name": "a-box",
-                  "type": "displayStand",
+                  "type": "a-box",
                   "position_x": "0.00",
                   "position_y": "0.50",
                   "position_z": "-2.50",
@@ -141,7 +141,7 @@ class Campaigns extends Component {
                   "products": [
                      {
                         "name": "orri-handbag-01",
-                        "type": "bag",
+                        "type": "glb",
                         "position_x": "0.00",
                         "position_y": "1.06",
                         "position_z": "-2.50",
@@ -157,7 +157,7 @@ class Campaigns extends Component {
                },
                {
                   "name": "a-box",
-                  "type": "displayStand",
+                  "type": "a-box",
                   "position_x": "2.00",
                   "position_y": "0.50",
                   "position_z": "-2.50",
@@ -171,7 +171,7 @@ class Campaigns extends Component {
                   "products": [
                      {
                         "name": "orri-handbag2",
-                        "type": "bag",
+                        "type": "glb",
                         "position_x": "2.00",
                         "position_y": "1.06",
                         "position_z": "-2.50",
@@ -187,7 +187,7 @@ class Campaigns extends Component {
                },
                {
                   "name": "a-box",
-                  "type": "displayStand",
+                  "type": "a-box",
                   "position_x": "-2.00",
                   "position_y": "0.50",
                   "position_z": "-2.50",
@@ -201,7 +201,7 @@ class Campaigns extends Component {
                   "products": [
                      {
                         "name": "orri-handbag",
-                        "type": "bag",
+                        "type": "glb",
                         "position_x": "-2.00",
                         "position_y": "1.06",
                         "position_z": "-2.50",
@@ -217,6 +217,111 @@ class Campaigns extends Component {
                }
             ]
          };
+
+        let orriCampaign2 =
+        {
+            "company": "ORRi",
+            "title": "ORRi Campaign 2",
+            "position_x": "0.00",
+            "position_y": "3.00",
+            "position_z": "5.00",
+            "rotation_x": "0.00",
+            "rotation_y": "0.00",
+            "rotation_z": "0.00",
+            "display_stands": [
+            {
+                "name": "a-box",
+                "type": "a-box",
+                "position_x": "0.00",
+                "position_y": "0.50",
+                "position_z": "-2.50",
+                "rotation_x": "0.00",
+                "rotation_y": "0.00",
+                "rotation_z": "0.00",
+                "scale": "1",
+                "format": "default",
+                "click_event": "none",
+                "animation": "none",
+                "products": [
+                    {
+                        "name": "orri-handbag-01",
+                        "type": "glb",
+                        "position_x": "0.00",
+                        "position_y": "1.06",
+                        "position_z": "-2.50",
+                        "rotation_x": "0.00",
+                        "rotation_y": "-90.00",
+                        "rotation_z": "0.00",
+                        "scale": "0.16",
+                        "format": "default",
+                        "click_event": "none",
+                        "animation": "none"
+                    }
+                ]
+            },
+            {
+                "name": "a-box",
+                "type": "a-box",
+                "position_x": "2.00",
+                "position_y": "0.50",
+                "position_z": "-2.50",
+                "rotation_x": "0.00",
+                "rotation_y": "0.00",
+                "rotation_z": "0.00",
+                "scale": "1",
+                "format": "default",
+                "click_event": "none",
+                "animation": "none",
+                "products": [
+                    {
+                        "name": "orri-handbag2",
+                        "type": "glb",
+                        "position_x": "2.00",
+                        "position_y": "1.06",
+                        "position_z": "-2.50",
+                        "rotation_x": "0.00",
+                        "rotation_y": "0.00",
+                        "rotation_z": "0.00",
+                        "scale": "0.2",
+                        "format": "default",
+                        "click_event": "none",
+                        "animation": "none"
+                    }
+                ]
+            },
+            {
+                "name": "a-box",
+                "type": "a-box",
+                "position_x": "-2.00",
+                "position_y": "0.50",
+                "position_z": "-2.50",
+                "rotation_x": "0.00",
+                "rotation_y": "0.00",
+                "rotation_z": "0.00",
+                "scale": "1",
+                "format": "default",
+                "click_event": "none",
+                "animation": "none",
+                "products": [
+                    {
+                        "name": "orri-handbag",
+                        "type": "glb",
+                        "position_x": "-2.00",
+                        "position_y": "1.06",
+                        "position_z": "-2.50",
+                        "rotation_x": "0.00",
+                        "rotation_y": "0.00",
+                        "rotation_z": "0.00",
+                        "scale": "0.2",
+                        "format": "default",
+                        "click_event": "none",
+                        "animation": "none"
+                    } 
+                ]
+            }
+        ]
+    };
+
         const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL;
         fetch(CAMPAIGN_API_URL, {
             method: 'POST',
@@ -226,6 +331,7 @@ class Campaigns extends Component {
             },
             // body: JSON.stringify(defaultCampaign)
             body: JSON.stringify(orriCampaign)
+            // body: JSON.stringify(orriCampaign2)
         })
         .then(res => {
             return res.json();

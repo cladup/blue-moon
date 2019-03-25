@@ -10,7 +10,6 @@ class Campaign extends Component {
             OBJECT_API_URL: props.object_api_url,
             campaign: props.campaign,
             selectedProductId: null,
-            
         };
 
         this.deleteCampaign = this.deleteCampaign.bind(this);
@@ -19,62 +18,73 @@ class Campaign extends Component {
 
         this.upload = this.upload.bind(this);
         this.fileInput = React.createRef();
+        this.downloadAllAssets = this.downloadAllAssets.bind(this);
     }
+
+    // called right before render() in React lifecycle
+    componentWillMount() {
+        this.downloadAllAssets();
+    }   // end of componentWillMount()
     
     // Event handler executed when a file is selected
     onSelectFile = (args) => this.upload(args);
 
+    // get the file user has selected - this.fileInput
+    // and send it to the server as a form('object_file')
     upload(event) {
         event.preventDefault();
         let fileToUpload = this.fileInput.current.files[0];
         console.log("upload following file to the server:");
         console.log(fileToUpload);
 
-        // const OBJECT_API_URL = this.state.OBJECT_API_URL;
-        // fetch(OBJECT_API_URL, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'multipart/form-data',
-        //     },
-        //     body: fileToUpload
-        // }).then(
-        //   response => response.json() // if the response is a JSON object
-        // ).then(
-        //   success => {  // Handle the success response object
-        //       console.log("upload success");
-        //       console.log(success);     
-        //   }
-        // ).catch(
-        //   error => {    // Handle the error response object
-        //     console.log("upload error");
-        //     console.log(error);
-        //   }
-        // );
-
-        var input = this.fileInput.current;
         var data = new FormData();
-        data.append('object_file', input.files[0]);
-
+        data.append('object_file', fileToUpload);
 
         const OBJECT_API_URL = this.state.OBJECT_API_URL;
         fetch(OBJECT_API_URL, {
             method: 'POST',
+            // headers: {   // browser sets the header accordingly, so no need to code it in
+            //     'Accept': 'application/json',
+            //     'Content-Type': 'multipart/form-data',
+            // },
             body: data
         }).then(
             response => response.json() // if the response is a JSON object
         ).then(
-            success => {  // Handle the success response object
-                console.log("upload success");
-                console.log(success);     
-            }
-        ).catch(
-            error => {    // Handle the error response object
-            console.log("upload error");
-            console.log(error);
+            result => {  // Handle the upload result
+                console.log("upload result");
+                console.log(result);
+            },
+            error => {  // Handle the error response object
+                console.log("upload error");
+                console.log(error);
             }
         );
-    }
+        // );
+    }   // end of upload()
+
+    // download all the files (assets) "linked" to the current campaign
+    downloadAllAssets() {
+        return;
+        let campaign_id = this.state.campaign.id;
+        console.log("download assets for current campaign: " + campaign_id);
+        const OBJECT_API_URL = this.state.OBJECT_API_URL+"/campaign_id/";
+        fetch(OBJECT_API_URL, {
+
+        }).then(
+            res => res.json()
+        ).then(
+            result => {
+                console.log("download result");
+                console.log(result);
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            error => {
+            }
+        )
+    }   // end of downloadAllAssets()
 
     highlightSelectedProduct(id, type) {
         if(id == null) return;
@@ -90,23 +100,26 @@ class Campaign extends Component {
             selected.setAttribute("selected", "false");
             selected.classList.remove("bg-primary");
         }
-    }
+    } // end of highlightSelectedProduct()
 
     deleteCampaign() {
-        let campaignId = this.state.campaign.id;
-        console.log("send delete campaign " + campaignId + " request");
-        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL + campaignId;
+        let campaign_id = this.state.campaign.id;
+        console.log("send delete campaign " + campaign_id + " request");
+        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL + campaign_id;
         fetch(CAMPAIGN_API_URL, {
             method: 'DELETE'
         })
         .then(data => {
-            console.log("campaign " + campaignId + " deleted.");
+            console.log("campaign " + campaign_id + " deleted.");
             return redirect('', '/')
         })
-    }
+    } // end of delteCampaign()
 
     // parse current scene into a new campaign,
     // then update to the server
+    // -------- 2019/03/25  TODO:
+    // ---- rotation got corrupted once. try to check NULL
+    // ---- initialize to 0 if null
     updateCampaign() {
         let currentCampaign = this.state.campaign;
         let new_campaign = {
@@ -184,9 +197,10 @@ class Campaign extends Component {
             new_campaign.display_stands.push(new_display_stand);
         }
 
-        let campaignId = currentCampaign.id;
-        console.log("send update campaign " + campaignId + " request");
-        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL + campaignId;
+        let campaign_id = currentCampaign.id;
+        console.log("send update campaign " + campaign_id + " request");
+        const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL + campaign_id;
+
         fetch(CAMPAIGN_API_URL, {
             method: 'PUT',
             headers: {
@@ -196,10 +210,10 @@ class Campaign extends Component {
             body: JSON.stringify(new_campaign)
         })
         .then(data => {
-            console.log("campaign " + campaignId + " updated.");
-            return redirect('', "/Campaigns/"+campaignId);
+            console.log("campaign " + campaign_id + " updated.");
+            return redirect('', "/Campaigns/"+campaign_id);
         })
-    }
+    }   // end of updateCampaign()
 
     // pop-up a new window to show end-user view
     previewCampaign() {

@@ -11,6 +11,8 @@ class SceneView extends Component {
         };
     }
 
+    // called right after render() in react lifecycle
+    // --- why not componentWillMount()?? maybe test later. this way was suggested by aframe+next user from stackoverflow
     componentDidMount() {
         if (typeof window !== 'undefined') {
             require('aframe');
@@ -90,10 +92,29 @@ class SceneView extends Component {
                 <Entity id="lighttest1" light="type: directional; intensity: 1; castShadow: true;" position="0 1 0" />
 
                 <Entity primitive='a-sky' src="#sky" position="0 -1 0" rotation="0 180 0" material="transparent: true" />
-                {/* <Entity primitive='a-ada-ocean' src="#water-normal" position="0 0 0" opacity="0.95" width="10000" height="10000" oceanlight="#lighttest1" /> */}
-                <Entity primitive='a-ada-ocean' position="0 0 0" opacity="0.95" width="10000" height="10000" oceanlight="#lighttest1" />
+                <Entity primitive='a-ada-ocean' src="#water-normal" position="0 0 0" opacity="0.95" width="10000" height="10000" oceanlight="#lighttest1" />
 
                 <Entity id="Env1" position="0.4 31 -0.5" scale="150 150 150" gltf-model="#modern-building-gltf" shadow="receive: true; cast: true" />
+            </>
+        )
+    }
+
+    
+    // this has to be added to campaign architecture
+    orriCampaign2Environment() {
+        return (
+            <>
+                <Entity light="type: spot; castShadow:false; angle: 70; color: #FFF; distance: 20; intensity: 0.5; penumbra: 0.5;" position="0 10 -2.5" rotation="-90 0 0" />
+                <Entity light="type: ambient; intensity: 0.7; castShadow: false;" position="0 1 0" />
+                <Entity id="lighttest1" light="type: directional; intensity: 0.1; castShadow: true;" position="0 1 0" />
+                <Entity id="lighttest2" light="type: directional; intensity: 0.6; castShadow: true; color:#e4b895;" position="-3 9 15"/>
+
+                <Entity primitive='a-sky' color="#FFFFFF" />
+  
+                <Entity primitive='a-ada-ocean' position="0 0 0" src="#water-normal" distortionScale="1" opacity="0.95" width="25" height="15" oceanlight="#lighttest1" />
+                <Entity primitive='a-ada-ocean' position="0 1 -5.7" rotation="90 0 0" src="#water-normal" opacity="0.95" width="25" height="15" oceanlight="#lighttest1" />
+            
+                <Entity id="Env1-1" position="0 -1.9 -6" scale="1 1 1" obj-model="obj: #orri-building-02-obj" material="color: #e1dfe0; repeat: 2 2;"  shadow="receive: true;" />
             </>
         )
     }
@@ -132,6 +153,8 @@ class SceneView extends Component {
                         <a-asset-item id="modern-building-water-circle-obj" src="/static/resources/environments/Enviroment/tiled_circle/water_circle_wood/outer_water_circle.obj" />
                         <a-asset-item id="modern-building-window-obj" src="/static/resources/environments/Enviroment/glass/glass_no_transparency.obj" />
 
+                        <a-asset-item id="orri-building-02-obj" src="/static/resources/environments/orri-design-02/buildingmodel.obj" />
+
                         {/*  3D Object */}
                         <a-asset-item id="bag-sample-2" src="/static/resources/models/beach_bag/beach_bag.glb" />
                         <a-asset-item id="demoShirt" src="/static/resources/models/beach_bag/beach_bag.glb" />
@@ -145,8 +168,9 @@ class SceneView extends Component {
                     </a-assets>
                     <Entity id="environments">
                         {(campaign.title == "Demo Campaign") ? this.demoCampaignEnvironment() : ''}
-                        {(campaign.title == "New Campaign") ? this.demoCampaignEnvironment() : ''}
-                        {(campaign.company == "ORRi") ? this.orriCampaignEnvironment() : ''}
+                        {(campaign.title == "Test Campaign") ? this.orriCampaignEnvironment() : ''}
+                        {(campaign.title == "ORRi Campaign") ? this.orriCampaignEnvironment() : ''}
+                        {(campaign.title == "ORRi Campaign 2") ? this.orriCampaign2Environment() : ''}
                     </Entity>
                     <Entity id="display_stands">
                         {
