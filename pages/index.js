@@ -18,10 +18,8 @@ class Index extends Component {
         };
     }
 
-
     render() {
         let routerQuery = this.props.router.query;
-
         return (
             <div>
                 <Head>

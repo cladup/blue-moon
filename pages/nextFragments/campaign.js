@@ -31,6 +31,9 @@ class Campaign extends Component {
 
     // get the file user has selected - this.fileInput
     // and send it to the server as a form('object_file')
+    // ---------------------------------------------- after upload, PATCH
+    // ---------------------------------------------- PATCH /objects/{name} - name: name field of response from upload (POST)
+    // ---------------------------------------------- { "alias": "product/graphic/{productId}" } - productId: from Campaign API ------????????????
     upload(event) {
         event.preventDefault();
         let fileToUpload = this.fileInput.current.files[0];
@@ -64,6 +67,7 @@ class Campaign extends Component {
     }   // end of upload()
 
     // download all the files (assets) "linked" to the current campaign
+    // OBJECT_API_URL/objects/product/graphic/{productId} <- productId: from Campaign API
     downloadAllAssets() {
         return;
         let campaign_id = this.state.campaign.id;
