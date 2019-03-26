@@ -2,13 +2,15 @@ import React, {Component} from 'react';
 import {Entity, Scene} from 'aframe-react';
 
 class SceneView extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             appRendered: false,
             selectedId: ''
         };
+
+        this.downloadAllAssets = this.downloadAllAssets.bind(this);
+
     }
 
     // called right after render() in react lifecycle
@@ -30,6 +32,33 @@ class SceneView extends Component {
         }
     }
 
+    
+    // download all the assets (files) "linked" to the current campaign
+    // OBJECT_API_URL/product/graphic/{productId} <- productId: from Campaign API
+    downloadAllAssets() {
+
+        console.log("download assets for current campaign");
+
+        let assets = [];
+        let display_stands = this.props.campaign.display_stands;
+        for (let i = 0; i < display_stands.length; i++) {
+            let display_stand_id = display_stands[i].id;
+            let products = display_stands[i].products;
+            for (let j = 0; j < products.length; j++) {
+                let product_id = products[j].id;
+                let asset_url = this.props.OBJECT_API_URL+"/product/model/"+product_id;
+                let asset_name = products[j].name;
+                assets.push(<a-asset-item key={product_id} id={asset_name} src={asset_url} crossOrigin="anonymous" />);
+            }
+        }
+        console.log(assets);
+
+        return(
+            <>
+                {assets}
+            </>
+        );
+    }   // end of downloadAllAssets()
 
     clickObject = (args) => {
         let target = args.target.parentElement;
@@ -144,7 +173,7 @@ class SceneView extends Component {
                         <img id="iron-wall" src="/static/resources/environments/Enviroment/tiled_circle/iron_wall/iron_wall.png" />
                         <img id="wood" src="/static/resources/environments/Enviroment/tiled_circle/water_circle_wood/wood_floor.png" />
                         <img id="water-normal" src="/static/resources/img/waternormals.jpg" />
-                        <img id="sky" src="/static/resources/environments/Enviroment/vp_sky_v3_015_2 (3).jpg" crossOrigin="anonymous" />
+                        <img id="sky" src="/static/resources/environments/Enviroment/vp_sky_v3_015_2 (3).jpg" />
                         
                         {/*  Environment */}
                         <a-asset-item id="demoTable" src="/static/resources/environments/Enviroment/enviroment_non_glass.glb" />
@@ -165,6 +194,9 @@ class SceneView extends Component {
                         <a-asset-item id="orri-handbag1" src="/static/resources/models/orri/handbag/handbag5p1k.glb" />
                         <a-asset-item id="orri-handbag2" src="/static/resources/models/orri/handbag/test.glb" />
                         <a-asset-item id="orri-handbag-01" src="/static/resources/models/orri/handbag/orri-handbag-wm-01.glb" />
+
+                        {/* {this.downloadAllAssets()} */}
+
                     </a-assets>
                     <Entity id="environments">
                         {(campaign.title == "Demo Campaign") ? this.demoCampaignEnvironment() : ''}

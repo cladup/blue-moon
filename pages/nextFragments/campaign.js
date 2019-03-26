@@ -8,7 +8,8 @@ class Campaign extends Component {
         this.state = {
             CAMPAIGN_API_URL: props.campaign_api_url,
             OBJECT_API_URL: props.object_api_url,
-            campaign: props.campaign,
+            campaign: null,
+            campaignFound: false,
             selectedProductId: null,
         };
 
@@ -18,13 +19,39 @@ class Campaign extends Component {
 
         this.upload = this.upload.bind(this);
         this.fileInput = React.createRef();
-        this.downloadAllAssets = this.downloadAllAssets.bind(this);
     }
 
-    // called right before render() in React lifecycle
-    componentWillMount() {
-        this.downloadAllAssets();
-    }   // end of componentWillMount()
+
+    componentDidMount() {
+        // get the selected campaign information from api server
+        let campaign_id = this.props.campaign_id;
+        if(!isNaN(campaign_id)) {
+            const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL+campaign_id;
+
+            fetch(CAMPAIGN_API_URL)
+                .then(res => res.json())
+                .then(
+                (result) => {
+                    if(result.detail == "Not found.") {
+                        this.setState({
+                            campaign: result,
+                        });
+                    } else {
+                        this.setState({
+                            campaign: result,
+                            campaignFound: true
+                        });
+                    }
+                },
+                (error) => {
+                    this.setState({
+                        error
+                    });
+                }
+            )
+        }
+
+    }   // end of componentDidMount()
     
     // Event handler executed when a file is selected
     onSelectFile = (args) => this.upload(args);
@@ -40,7 +67,7 @@ class Campaign extends Component {
         console.log("upload following file to the server:");
         console.log(fileToUpload);
 
-        var data = new FormData();
+        let data = new FormData();
         data.append('object_file', fileToUpload);
 
         const OBJECT_API_URL = this.state.OBJECT_API_URL;
@@ -66,29 +93,6 @@ class Campaign extends Component {
         // );
     }   // end of upload()
 
-    // download all the files (assets) "linked" to the current campaign
-    // OBJECT_API_URL/objects/product/graphic/{productId} <- productId: from Campaign API
-    downloadAllAssets() {
-        return;
-        let campaign_id = this.state.campaign.id;
-        console.log("download assets for current campaign: " + campaign_id);
-        const OBJECT_API_URL = this.state.OBJECT_API_URL+"/campaign_id/";
-        fetch(OBJECT_API_URL, {
-
-        }).then(
-            res => res.json()
-        ).then(
-            result => {
-                console.log("download result");
-                console.log(result);
-            },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
-            error => {
-            }
-        )
-    }   // end of downloadAllAssets()
 
     highlightSelectedProduct(id, type) {
         if(id == null) return;
@@ -225,9 +229,16 @@ class Campaign extends Component {
     }
 
     render() {
-        let campaign = this.state.campaign;
-        let displayStands = campaign.display_stands;
+        const { campaign, campaignFound } = this.state;
+        
+        if(!campaignFound) {
+            return (
+                <div>This campaign does not exist anymore</div>
+            )
+        }
 
+
+        let displayStands = campaign.display_stands;
         return (
             <div>
                 <div className="box-white row">
@@ -249,6 +260,7 @@ class Campaign extends Component {
                         <SceneView
                             campaign={campaign}
                             highlightSelectedProduct={this.highlightSelectedProduct}
+                            OBJECT_API_URL={this.state.OBJECT_API_URL}
                         />
                     </div>
                     <div className="col-3">
@@ -286,6 +298,7 @@ class Campaign extends Component {
                 </div>
             </div>
         )
+        
     }
 }
 

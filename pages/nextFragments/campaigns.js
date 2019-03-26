@@ -4,8 +4,8 @@ import Campaign from './campaign';
 import redirect from 'next-redirect';
 
 const PostLink = (props) => (
-    <Link as={`/Campaigns/${props.campaignId}`} href={`/Campaigns/${props.campaignId}`}>
-        <a className="nav-link">{props.campaignTitle}</a>
+    <Link as={`/Campaigns/${props.campaign_id}`} href={`/Campaigns/${props.campaign_id}`}>
+        <a className="nav-link">{props.campaign_title}</a>
     </Link>
 )
 
@@ -18,9 +18,6 @@ class Campaigns extends Component {
             error: null,        // api server - get error
             isLoaded: false,    // api server - get flag
             campaigns: [],
-            isCampaignLoaded: false,
-            campaign: null,
-            campaignFound: false
         };
         // This binding is necessary to make `this` work in the callback
         this.createNewCampaign = this.createNewCampaign.bind(this);
@@ -31,8 +28,8 @@ class Campaigns extends Component {
         // get campaign list from api server
         const CAMPAIGN_LIST_API_URL = this.state.CAMPAIGN_API_URL;
         fetch(CAMPAIGN_LIST_API_URL)
-            .then(res => res.json())
-            .then(
+        .then(res => res.json())
+        .then(
             (result) => {
                 this.setState({
                     isLoaded: true,
@@ -49,39 +46,6 @@ class Campaigns extends Component {
                 });
             }
         )
-        
-        //=====================================================================
-        // get the selected campaign information from api server
-        let campaignId = this.props.campaignId;
-        if(!isNaN(campaignId)) {
-            const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL+campaignId;
-
-            fetch(CAMPAIGN_API_URL)
-                .then(res => res.json())
-                .then(
-                (result) => {
-                    if(result.detail == "Not found.") {
-                        this.setState({
-                            isCampaignLoaded: true,
-                            campaign: result,
-                        });
-                    } else {
-                        this.setState({
-                            isCampaignLoaded: true,
-                            campaign: result,
-                            campaignFound: true
-                        });
-                    }
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-        }
-        //=====================================================================
     }
 
     createNewCampaign() {
@@ -228,99 +192,100 @@ class Campaigns extends Component {
             "rotation_x": "0.00",
             "rotation_y": "0.00",
             "rotation_z": "0.00",
-            "display_stands": [
-            {
-                "name": "a-box",
-                "type": "a-box",
-                "position_x": "0.00",
-                "position_y": "0.50",
-                "position_z": "-2.50",
-                "rotation_x": "0.00",
-                "rotation_y": "0.00",
-                "rotation_z": "0.00",
-                "scale": "1",
-                "format": "default",
-                "click_event": "none",
-                "animation": "none",
-                "products": [
-                    {
-                        "name": "orri-handbag-01",
-                        "type": "glb",
-                        "position_x": "0.00",
-                        "position_y": "1.06",
-                        "position_z": "-2.50",
-                        "rotation_x": "0.00",
-                        "rotation_y": "-90.00",
-                        "rotation_z": "0.00",
-                        "scale": "0.16",
-                        "format": "default",
-                        "click_event": "none",
-                        "animation": "none"
-                    }
-                ]
-            },
-            {
-                "name": "a-box",
-                "type": "a-box",
-                "position_x": "2.00",
-                "position_y": "0.50",
-                "position_z": "-2.50",
-                "rotation_x": "0.00",
-                "rotation_y": "0.00",
-                "rotation_z": "0.00",
-                "scale": "1",
-                "format": "default",
-                "click_event": "none",
-                "animation": "none",
-                "products": [
-                    {
-                        "name": "orri-handbag2",
-                        "type": "glb",
-                        "position_x": "2.00",
-                        "position_y": "1.06",
-                        "position_z": "-2.50",
-                        "rotation_x": "0.00",
-                        "rotation_y": "0.00",
-                        "rotation_z": "0.00",
-                        "scale": "0.2",
-                        "format": "default",
-                        "click_event": "none",
-                        "animation": "none"
-                    }
-                ]
-            },
-            {
-                "name": "a-box",
-                "type": "a-box",
-                "position_x": "-2.00",
-                "position_y": "0.50",
-                "position_z": "-2.50",
-                "rotation_x": "0.00",
-                "rotation_y": "0.00",
-                "rotation_z": "0.00",
-                "scale": "1",
-                "format": "default",
-                "click_event": "none",
-                "animation": "none",
-                "products": [
-                    {
-                        "name": "orri-handbag",
-                        "type": "glb",
-                        "position_x": "-2.00",
-                        "position_y": "1.06",
-                        "position_z": "-2.50",
-                        "rotation_x": "0.00",
-                        "rotation_y": "0.00",
-                        "rotation_z": "0.00",
-                        "scale": "0.2",
-                        "format": "default",
-                        "click_event": "none",
-                        "animation": "none"
-                    } 
-                ]
-            }
-        ]
-    };
+            "display_stands":
+            [
+                {
+                    "name": "a-box",
+                    "type": "a-box",
+                    "position_x": "0.00",
+                    "position_y": "0.50",
+                    "position_z": "-2.50",
+                    "rotation_x": "0.00",
+                    "rotation_y": "0.00",
+                    "rotation_z": "0.00",
+                    "scale": "1",
+                    "format": "default",
+                    "click_event": "none",
+                    "animation": "none",
+                    "products": [
+                        {
+                            "name": "orri-handbag-01",
+                            "type": "glb",
+                            "position_x": "0.00",
+                            "position_y": "1.06",
+                            "position_z": "-2.50",
+                            "rotation_x": "0.00",
+                            "rotation_y": "-90.00",
+                            "rotation_z": "0.00",
+                            "scale": "0.16",
+                            "format": "default",
+                            "click_event": "none",
+                            "animation": "none"
+                        }
+                    ]
+                },
+                {
+                    "name": "a-box",
+                    "type": "a-box",
+                    "position_x": "2.00",
+                    "position_y": "0.50",
+                    "position_z": "-2.50",
+                    "rotation_x": "0.00",
+                    "rotation_y": "0.00",
+                    "rotation_z": "0.00",
+                    "scale": "1",
+                    "format": "default",
+                    "click_event": "none",
+                    "animation": "none",
+                    "products": [
+                        {
+                            "name": "orri-handbag2",
+                            "type": "glb",
+                            "position_x": "2.00",
+                            "position_y": "1.06",
+                            "position_z": "-2.50",
+                            "rotation_x": "0.00",
+                            "rotation_y": "0.00",
+                            "rotation_z": "0.00",
+                            "scale": "0.2",
+                            "format": "default",
+                            "click_event": "none",
+                            "animation": "none"
+                        }
+                    ]
+                },
+                {
+                    "name": "a-box",
+                    "type": "a-box",
+                    "position_x": "-2.00",
+                    "position_y": "0.50",
+                    "position_z": "-2.50",
+                    "rotation_x": "0.00",
+                    "rotation_y": "0.00",
+                    "rotation_z": "0.00",
+                    "scale": "1",
+                    "format": "default",
+                    "click_event": "none",
+                    "animation": "none",
+                    "products": [
+                        {
+                            "name": "orri-handbag",
+                            "type": "glb",
+                            "position_x": "-2.00",
+                            "position_y": "1.06",
+                            "position_z": "-2.50",
+                            "rotation_x": "0.00",
+                            "rotation_y": "0.00",
+                            "rotation_z": "0.00",
+                            "scale": "0.2",
+                            "format": "default",
+                            "click_event": "none",
+                            "animation": "none"
+                        } 
+                    ]
+                }
+            ]
+        };
 
         const CAMPAIGN_API_URL = this.state.CAMPAIGN_API_URL;
         fetch(CAMPAIGN_API_URL, {
@@ -349,16 +314,14 @@ class Campaigns extends Component {
     }
 
     render() {
-        const { error, isLoaded, campaigns, isCampaignLoaded, campaign, campaignFound } = this.state;
-        const campaignId = this.props.campaignId;
+        const { error, isLoaded, campaigns, isCampaignLoaded } = this.state;
+        const campaign_id = this.props.campaign_id;
 
 
         if (error) {
           return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
           return <div>Loading campaign list from api server...</div>;
-        } else if(!isNaN(campaignId) && !isCampaignLoaded) {
-            return <div>Loading campaign from api server...</div>;
         } else {
             return (
                 <div className="row bg-light-gray height90">
@@ -375,23 +338,21 @@ class Campaigns extends Component {
                         </div>
                         <div className="box-white">
                             {campaigns.map((campaign) => {
-                                return (<PostLink key={campaign.id} campaignId={campaign.id} campaignTitle={campaign.title} />)
+                                return (<PostLink key={campaign.id} campaign_id={campaign.id} campaign_title={campaign.title} />)
                             })}
                         </div>
                         <div className="box-white text-center">(CLOUD STORAGE INFORMATION)</div>
                     </div>
                     <div className="col-10">
                         {
-                            (isNaN(campaignId)) 
+                            (isNaN(campaign_id)) 
                             ? 'Please select a campaign from the list to the left'
-                            : (campaignFound)
-                                ?
-                                    <Campaign
-                                        campaign_api_url={this.state.CAMPAIGN_API_URL}
-                                        object_api_url={this.state.OBJECT_API_URL}
-                                        campaign={campaign}
-                                    /> 
-                                : <div>This campaign does not exist anymore</div>
+                            : 
+                                <Campaign
+                                    campaign_api_url={this.state.CAMPAIGN_API_URL}
+                                    object_api_url={this.state.OBJECT_API_URL}
+                                    campaign_id={campaign_id}
+                                /> 
                            
                         }
                     </div>

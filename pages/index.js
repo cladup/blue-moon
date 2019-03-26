@@ -19,7 +19,7 @@ class Index extends Component {
     }
 
     render() {
-        let routerQuery = this.props.router.query;
+        let router_query = this.props.router.query;
         return (
             <div>
                 <Head>
@@ -28,20 +28,20 @@ class Index extends Component {
                     <title>Clad Up</title>
                 </Head>
                 <div className="container-fluid d-flex h-100 flex-column">
-                    <Header nav={routerQuery.page} />
+                    <Header nav={router_query.page} />
                     <div className="row flex-fill d-flex justify-content-start overflow-auto">
                         <div className="col-12">
-                            {(routerQuery.page == 'Campaigns')
+                            {(router_query.page == 'Campaigns')
                                 ?
                                     <Campaigns
-                                        campaignId={routerQuery.campaignId}
+                                        campaign_id={router_query.campaign_id}
                                         campaign_api_url={this.state.CAMPAIGN_API_URL}
                                         object_api_url={this.state.OBJECT_API_URL}
                                     />
                                 : ''
                             }
-                            {(routerQuery.page == 'Products') ? <Products /> : ''}
-                            {(routerQuery.page == undefined) ? '랜딩페이지!' : ''}
+                            {(router_query.page == 'Products') ? <Products /> : ''}
+                            {(router_query.page == undefined) ? '랜딩페이지!' : ''}
                         </div>
                     </div>
                 </div>

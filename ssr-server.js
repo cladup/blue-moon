@@ -17,9 +17,9 @@ app.prepare()
   })
 
   // page route masking
-  server.get('/:page/:campaignId', (req, res) => {
+  server.get('/:page/:campaign_id', (req, res) => {
     const actualPage = '/index'
-    const queryParams = { page: req.params.page, campaignId: req.params.campaignId } 
+    const queryParams = { page: req.params.page, campaign_id: req.params.campaign_id }
     app.render(req, res, actualPage, queryParams)
   })
 
