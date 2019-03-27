@@ -19,6 +19,7 @@ class Campaign extends Component {
 
         this.upload = this.upload.bind(this);
         this.fileInput = React.createRef();
+
     }
 
 
@@ -94,12 +95,14 @@ class Campaign extends Component {
     }   // end of upload()
 
 
-    highlightSelectedProduct(id, type) {
+    highlightSelectedProduct(id, is_display_stand) {
         if(id == null) return;
         let selected = '';
 
-        if(type == 'displayStand')  { selected = document.getElementById('displayStand'+id); }
-        else                        { selected= document.getElementById('product'+id); }
+        if(is_display_stand == 'true')  { selected = document.getElementById('display_stand'+id); }
+        else                        { selected = document.getElementById('product'+id); }
+
+        if(selected == null) return;
 
         if(selected.getAttribute("selected") == "false" || selected.getAttribute("selected") == null ) {
             selected.setAttribute("selected", "true");
@@ -223,10 +226,23 @@ class Campaign extends Component {
         })
     }   // end of updateCampaign()
 
-    // pop-up a new window to show end-user view
+    // toggle the inspector view
     previewCampaign() {
-        console.log("preview button clicked.");
+        let toggleEditElements = document.getElementsByClassName("toggle-edit");
+        for (let index = 0; index < toggleEditElements.length; index++) {
+            if(toggleEditElements[index].innerHTML == "Back to Scene") {
+                toggleEditElements[index].click();
+                break;
+            } else if(toggleEditElements[index].innerHTML == "Inspect Scene") {
+                toggleEditElements[index].click();
+                document.body.classList.remove("aframe-inspector-opened");
+                break;
+            }
+        }
+
+
     }
+    
 
     render() {
         const { campaign, campaignFound } = this.state;
@@ -238,7 +254,7 @@ class Campaign extends Component {
         }
 
 
-        let displayStands = campaign.display_stands;
+        let display_stands = campaign.display_stands;
         return (
             <div>
                 <div className="box-white row">
@@ -246,7 +262,7 @@ class Campaign extends Component {
                         <h5 className="align-middle">{this.state.campaign.title}</h5>
                     </div>
                     <div className="col-1">
-                        <button className="btn btn-primary" onClick={this.previewCampaign}>preview</button>
+                        <button className="btn btn-primary toggle-edit" onClick={this.previewCampaign}>preview</button>
                     </div>
                     <div className="col-1">
                         <button className="btn btn-primary" onClick={this.updateCampaign}>update</button>
@@ -277,9 +293,9 @@ class Campaign extends Component {
                                     </div> */}
                                 </form>
                             </div>
-                            {displayStands.map((displayStand) => {
+                            {display_stands.map((display_stand) => {
                                 return (
-                                    displayStand.products.map((product) => {
+                                    display_stand.products.map((product) => {
                                         return (<div key={product.id} id={'product'+product.id} className="box-white">{product.name}</div>)
                                 }))
                             })}
@@ -288,8 +304,8 @@ class Campaign extends Component {
                             <div className="box-white">
                                 <h6>Display Stands</h6>
                             </div>
-                            {displayStands.map((displayStand) => {
-                                return (<div key={displayStand.id} id={"displayStand"+displayStand.id} className="box-white">{displayStand.name}</div>)
+                            {display_stands.map((display_stand) => {
+                                return (<div key={display_stand.id} id={"display_stand"+display_stand.id} className="box-white">{display_stand.name}</div>)
                             })}
                         </div>
                     </div>

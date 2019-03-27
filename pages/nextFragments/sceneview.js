@@ -80,11 +80,11 @@ class SceneView extends Component {
     }
     
     selectObject = (target) => {
-        this.props.highlightSelectedProduct(target.getAttribute('id'), target.getAttribute('type'));
+        this.props.highlightSelectedProduct(target.getAttribute('id'), target.getAttribute('is_display_stand'));
     }
     
     deselectObject = (target) => {
-        this.props.highlightSelectedProduct(target.getAttribute('id'),  target.getAttribute('type'));
+        this.props.highlightSelectedProduct(target.getAttribute('id'),  target.getAttribute('is_display_stand'));
     }
 
     lockOrbitControls = (args) => {
@@ -161,13 +161,14 @@ class SceneView extends Component {
             <div id="sceneviewDiv" className="height80">
                 {appRendered &&
                 <Scene
+                    id="aframe_scene"
                     //stats
                     embedded
                     vr-mode-ui="enabled: false;"
                     enable-inspector-onload
                 >
                     <a-assets
-                        //timeout="3000"    // default value: 3000
+                        timeout="30000"    // default value: 3000
                     >
                         {/*  Images */}
                         <img id="iron-wall" src="/static/resources/environments/Enviroment/tiled_circle/iron_wall/iron_wall.png" />
@@ -186,9 +187,7 @@ class SceneView extends Component {
 
                         {/*  3D Object */}
                         <a-asset-item id="bag-sample-2" src="/static/resources/models/beach_bag/beach_bag.glb" />
-                        <a-asset-item id="demoShirt" src="/static/resources/models/beach_bag/beach_bag.glb" />
                         <a-asset-item id="demoBag" src="/static/resources/scanned/handbag2p2k.glb" />
-                        <a-asset-item id="demoShoe" src="/static/resources/scanned/vans_blue_shoe.glb" />
 
                         <a-asset-item id="orri-handbag" src="/static/resources/models/orri/handbag/handbag2p2k.glb" />
                         <a-asset-item id="orri-handbag1" src="/static/resources/models/orri/handbag/handbag5p1k.glb" />
@@ -224,6 +223,7 @@ class SceneView extends Component {
                                         click_event={displayStand.click_event}
                                         dp_animation={displayStand.animation}
                                         isSelected={false}
+                                        is_display_stand={true}
                                     >
                                         <Entity
                                             init-product
@@ -261,6 +261,7 @@ class SceneView extends Component {
                                                         click_event={product.click_event}
                                                         product_animation={product.animation}
                                                         isSelected={false}
+                                                        is_display_stand={false}
                                                     >
                                                         <Entity
                                                             init-product
@@ -285,6 +286,18 @@ class SceneView extends Component {
                             })
                         }
                     </Entity>
+                     
+                    {/* <Entity
+                        init-product
+                        id="from_objection"
+                        //gltf-model="/static/resources/scanned/vans_blue_shoe_1_1024.glb"
+                        gltf-model="http://objection.clad-up.com/api/v1/objects/product/model/63"
+                        crossOrigin="anonymous"
+                        position=".25 1 -2.5"
+                        scale="3 3 3"
+                        rotation="0 45 0"
+                    /> */}
+
 
                     <Entity
                         primitive="a-camera"
