@@ -239,8 +239,6 @@ class Campaign extends Component {
                 break;
             }
         }
-
-
     }
     
 

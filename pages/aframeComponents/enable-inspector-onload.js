@@ -7,7 +7,7 @@ AFRAME.registerComponent('enable-inspector-onload', {
     }
 });
 
-let intervalId = setInterval(checkAframeInspector, 1000);
+// let intervalId = setInterval(checkAframeInspector, 1000);
 function checkAframeInspector() {
     let aframeInspector = document.getElementById('aframeInspector');
     if(aframeInspector == null) return;

@@ -148,6 +148,21 @@ class SceneView extends Component {
         )
     }
 
+    TestCampaignEnvironment() {
+        return (
+            <Entity
+                init-product
+                id="from_objection"
+                //gltf-model="http://objection.clad-up.com/api/v1/objects/product/model/63"
+                gltf-model="https://storage.googleapis.com/cladup-objects/Gsq1eZVY7wXg3pvn2X8KCrZVLuetSITS_1553668841752860.glb?GoogleAccessId=objection%40cladup-232707.iam.gserviceaccount.com&Expires=1553834056&Signature=cv7gXlJDtgx%2Fk5Fixm0abj3cmyHVY8VmUR%2B53FxAgbgINl8PJcJ07XVFO%2BWRmlVuh9yj0wKV2pSRLB8VfPAkCf4htd%2FH8RLlXk8l%2F3ySAKEpC8BewuLI3yUFVPZfT%2BI6cniKa68bMQ%2B1RJIyckQaA0ruAHQBF%2BgLFiPIFVyio%2FYd96UKves5ChhO8BC%2BX%2FgsLegIzcz4%2FhvPChz%2BRWIaw2Pfa0KPTYyZvwkOr8sbi3hcdFG19hgGloIGB8VLM6pCOLOvInCBtv66WhqF6oxkgww%2FvtVDchf9zZjU9rnBwDYCrZkf5GQKZ4htWd6D1wnjtjjkUZ4v5sLUrmR%2F6y5XpA%3D%3D"
+                crossOrigin="anonymous"
+                position=".25 1 -2.5"
+                scale="3 3 3"
+                rotation="0 45 0"
+            />
+        )
+    }
+
     render() {
         const appRendered = this.state.appRendered;
 
@@ -199,12 +214,13 @@ class SceneView extends Component {
                     </a-assets>
                     <Entity id="environments">
                         {(campaign.title == "Demo Campaign") ? this.demoCampaignEnvironment() : ''}
-                        {(campaign.title == "Test Campaign") ? this.orriCampaignEnvironment() : ''}
                         {(campaign.title == "ORRi Campaign") ? this.orriCampaignEnvironment() : ''}
                         {(campaign.title == "ORRi Campaign 2") ? this.orriCampaign2Environment() : ''}
                     </Entity>
                     <Entity id="display_stands">
                         {
+                            (campaign.title == "Test Campaign") ? this.TestCampaignEnvironment() : 
+                            
                             displayStands.map((displayStand) => {
                                 let dp_position3 = displayStand.position_x + " " + displayStand.position_y + " " + displayStand.position_z;
                                 let rotation3 = displayStand.rotation_x + " " + displayStand.rotation_y + " " + displayStand.rotation_z;
@@ -286,17 +302,6 @@ class SceneView extends Component {
                             })
                         }
                     </Entity>
-                     
-                    {/* <Entity
-                        init-product
-                        id="from_objection"
-                        //gltf-model="/static/resources/scanned/vans_blue_shoe_1_1024.glb"
-                        gltf-model="http://objection.clad-up.com/api/v1/objects/product/model/63"
-                        crossOrigin="anonymous"
-                        position=".25 1 -2.5"
-                        scale="3 3 3"
-                        rotation="0 45 0"
-                    /> */}
 
 
                     <Entity
